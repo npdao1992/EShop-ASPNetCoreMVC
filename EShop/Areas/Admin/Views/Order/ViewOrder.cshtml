@@ -1,0 +1,65 @@
+﻿@model IEnumerable<OrderDetails>
+@{
+	ViewData["title"] = "Order Details";
+	var userName = "";
+	var toTal = 0;
+	var stt = 1;
+}
+<h3>List View Order</h3>
+<div class="col-md-12">
+	@foreach (var item in Model)
+	{
+		<div style="font-size: 16px; font-weight:bold">
+			Đơn hàng của tài khoản: <span style="color: chocolate">@item.UserName</span>
+			<br />
+			Order Code: <span style="color: chocolate">@item.OrderCode</span>
+		</div>
+		break;
+	}
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				@* <th scope="col" width="20%">Order Code</th>
+				<th scope="col">UserName</th> *@
+				<th scope="col">Product Name</th>
+				<th scope="col">Product Image</th>
+				<th scope="col">Order Price</th>
+				<th scope="col">Order Quantity</th>
+				<th scope="col">Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<th>@stt</th>
+					@* <th scope="row">@item.OrderCode</th>
+				<td>@item.UserName</td> *@
+					<td>@item.Product.Name</td>
+					<td><img src="~/media/products/@item.Product.Image" width="70px" height="100%" /></td>
+					<td>@String.Format("{0:N2}", item.Price)</td>
+					<td>@String.Format("{0:N2}", item.Quantity)</td>
+					<td> @String.Format("{0:N2}", item.Quantity * item.Price)</td>
+					@* <td>
+				@if (@item.Status == 1)
+				{
+				<span class="text text-success">Đơn hàng mới</span>
+				}
+				else
+				{
+				<span class="text text-danger">Đơn hàng thành công</span>
+				}
+				</td> *@
+					@* <td>
+				<a asp-action="ViewOrder" class="btn btn-warning btn-sm" asp-controller="Order" asp-route-id="@item.OrderCode">View Order</a>
+				<a asp-action="Delete" class="btn btn-danger btn-sm confirmDeletion" asp-controller="Order" asp-route-id="@item.Id">Delete</a>
+				</td> *@
+				</tr>
+				stt++;
+			}
+		</tbody>
+	</table>
+
+	<a asp-action="Index">Back to List Orders</a>
+</div>
