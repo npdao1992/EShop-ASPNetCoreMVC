@@ -171,7 +171,7 @@ namespace EShop.Areas.Admin.Controllers
 
 			_dataContext.Categories.Remove(category);
 			await _dataContext.SaveChangesAsync();
-			TempData["successs"] = "Danh mục đã xoá";
+			TempData["successs"] = "Danh mục đã xoá thành công";
 			return RedirectToAction("Index");
 		}
 

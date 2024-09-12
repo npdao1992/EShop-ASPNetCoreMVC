@@ -1,4 +1,5 @@
-﻿using EShop.Models;
+﻿using EShop.Areas.Admin.Repository;
+using EShop.Models;
 using EShop.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +10,13 @@ namespace EShop.Controllers
 	{
 		private UserManager<AppUserModel> _userManager;
 		private SignInManager<AppUserModel> _singInManager;
+		private readonly IEmailSender _emailSender;
 
-		public AccountController(SignInManager<AppUserModel> singInManager, UserManager<AppUserModel> userManager)
+		public AccountController(IEmailSender emailSender ,SignInManager<AppUserModel> singInManager, UserManager<AppUserModel> userManager)
 		{
 			_singInManager = singInManager;
 			_userManager = userManager;
+			_emailSender = emailSender;
 		}
 
 		public IActionResult Login(string returnUrl)

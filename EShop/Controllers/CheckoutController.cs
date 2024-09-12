@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using EShop.Areas.Admin.Repository;
 using EShop.Models;
 using EShop.Models.ViewModels;
 using EShop.Repository;
@@ -9,10 +10,12 @@ namespace EShop.Controllers
 	public class CheckoutController : Controller
 	{
 		private readonly DataContext _dataContext;
+		private readonly IEmailSender _emailSender;
 
-		public CheckoutController(DataContext context)
+		public CheckoutController(IEmailSender emailSender, DataContext context)
 		{
 			_dataContext = context;
+			_emailSender = emailSender;
 		}
 
 		public async Task<IActionResult> Checkout()
@@ -34,6 +37,7 @@ namespace EShop.Controllers
 				_dataContext.Add(orderItem);
 				_dataContext.SaveChanges();
 
+				//Tạo order details
 				List<CartItemModel> cartItems = HttpContext.Session.GetJson<List<CartItemModel>>("Cart") ?? new List<CartItemModel>();
 				foreach (var cart in cartItems)
 				{
@@ -48,6 +52,14 @@ namespace EShop.Controllers
 				}
 
 				HttpContext.Session.Remove("Cart");
+
+				//Send mail order when success
+				var receiver = userEmail; // Email đăng nhập
+				var subject = "Đặt hàng thành công.";
+				var message = "Đặt hàng thành công, trải nghiệm dịch vụ nhé.";
+
+				await _emailSender.SendEmailAsync(receiver, subject, message);
+
 				TempData["success"] = "Checkout thành công, vui lòng chờ duyệt đơn hàng.";
 
 				return RedirectToAction("Index", "Cart");

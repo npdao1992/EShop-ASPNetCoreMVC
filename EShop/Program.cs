@@ -1,3 +1,4 @@
+using EShop.Areas.Admin.Repository;
 using EShop.Models;
 using EShop.Repository;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Connection db
 builder.Services.AddDbContext<DataContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectedDb")));
+
+// Add Email Sender
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

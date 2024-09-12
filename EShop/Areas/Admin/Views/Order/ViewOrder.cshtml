@@ -2,7 +2,8 @@
 @{
 	ViewData["title"] = "Order Details";
 	var userName = "";
-	var toTal = 0;
+	decimal toTal = 0;
+	decimal subtoTal = 0;
 	var stt = 1;
 
 	Paginate pager = new Paginate();
@@ -30,25 +31,34 @@
 				<th scope="col">No</th>
 				@* <th scope="col" width="20%">Order Code</th>
 				<th scope="col">UserName</th> *@
+				<th scope="col">Id</th>
 				<th scope="col">Product Name</th>
 				<th scope="col">Product Image</th>
-				<th scope="col">Order Price</th>
-				<th scope="col">Order Quantity</th>
-				<th scope="col">Total</th>
+				<th scope="col">Product Price</th>
+				<th scope="col">Quantity</th>
+				<th scope="col">SubTotal</th>
 			</tr>
 		</thead>
 		<tbody>
 			@foreach (var item in Model.Item1)
 			{
+				subtoTal = item.Quantity * item.Price; // Số lượng n* đơn giá
+				toTal += subtoTal;
 				<tr>
+					<input type="hidden" asp-for="@item.OrderCode" class="getId" />
 					<th>@stt</th>
 					@* <th scope="row">@item.OrderCode</th>
 				<td>@item.UserName</td> *@
+					<td>@item.Id</td>
 					<td>@item.Product.Name</td>
 					<td><img src="~/media/products/@item.Product.Image" width="70px" height="100%" /></td>
-					<td>@String.Format("{0:N2}", item.Price)</td>
+					<td>@String.Format("{0:N2}", item.Price.ToString("C"))</td>
 					<td>@String.Format("{0:N2}", item.Quantity)</td>
-					<td> @String.Format("{0:N2}", item.Quantity * item.Price)</td>
+
+					<td>@subtoTal.ToString("C")</td>
+					@* <td> @String.Format("{0:N2}", item.Quantity * item.Price)</td> *@
+
+
 					@* <td>
 				@if (@item.Status == 1)
 				{
@@ -66,6 +76,16 @@
 				</tr>
 				stt++;
 			}
+			<tr>
+				<th colspan="5">Total:</th>
+				<td>@toTal.ToString("C")</td>
+				<td>
+					<select class="form-control select-update-order">
+						<option value="1">Đơn hàng mới</option>
+						<option value="0">Đã xử lý</option>
+					</select>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 
@@ -76,3 +96,40 @@
 <partial name="_paging" model="@pager" />
 
 <a asp-action="Index">Back to List Orders</a>
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$('.select-update-order').change(function () {
+				var status = $(this).val(); //status = 1
+				var ordercode = $('.getId').val();
+				// alert(status);
+				// alert(ordercode);
+				$.ajax({
+					type: "POST",
+					url: "@Url.Action("UpdateOrder")",
+					data: { status: status, ordercode: ordercode },
+							success: function (result) {
+						// Handle successful update
+						if (result.success) 
+						{
+							// Update UI or show success mesage
+							// console.log("Update successful");
+							Swal.fire("Cập nhật đơn hàng thành công.");
+						}
+						else 
+						{
+							// Handle error
+							// console.log("Update failed: " + result.message);
+							Swal.fire("Cập nhật đơn hàng thất bại: " + result.message);
+						}
+					}
+					// ,
+					// error: function (reg, status, error) {
+					// 	console.error("Error updating order: ", error);
+					// }
+				});
+			});
+		});
+	</script>
+}
