@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProductModel>
+﻿@model Tuple<IEnumerable<ProductModel>, int>
 @{
 	ViewData["title"] = "Product Listed";
 	var stt = 1;
@@ -11,7 +11,7 @@
 		pageNo = pager.CurrentPage;
 	}
 }
-<h3>List Products</h3>
+<h3>List Products (<span style="color: orangered"> @Model.Item2 </span>)</h3>
 
 <a class="btn btn-primary" asp-action="Create" asp-controller="Product">Add Product</a>
 
@@ -27,18 +27,27 @@
 			<th scope="col">Product Price</th>
 			<th scope="col">Product Category</th>
 			<th scope="col">Product Brand</th>
-			<th scope="col">Product Action</th>
+			<th scope="col" width="20%">Product Action</th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model)
+		@foreach (var item in Model.Item1)
 		{
 			<tr>
 				<th scope="row">@stt</th>
 				<td>@item.Id</td>
 				<td>@item.Name</td>
-				<td>@item.Description</td>
-				<td><img src="~/media/products/@item.Image" width="120px"/></td>
+				<td class="description-column" title="@item.Description">
+					@if (item.Description.Length > 30)
+					{
+						@(@item.Description.Substring(0, 30) + "...")
+					}
+					else
+					{
+						@item.Description
+					}
+				</td>
+				<td><img src="~/media/products/@item.Image" width="120px" /></td>
 				<td>@item.Slug</td>
 				<td>@String.Format("{0:N2}", item.Price)</td>
 				<td>@item.Category.Name</td>

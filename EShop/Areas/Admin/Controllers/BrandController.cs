@@ -40,9 +40,12 @@ namespace EShop.Areas.Admin.Controllers
 
 			var data = brand.Skip(recSkip).Take(pager.PageSize).ToList();
 
+			// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
+			var model = new Tuple<IEnumerable<BrandModel>, int>(data, recsCount);
+
 			ViewBag.Pager = pager;
 
-			return View(data);
+			return View(model);
 		}
 		[Route("Edit")]
 		public async Task<IActionResult> Edit(int Id)

@@ -42,9 +42,12 @@ namespace EShop.Areas.Admin.Controllers
 
 			var data = order.Skip(recSkip).Take(pager.PageSize).ToList();
 
+			// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
+			var model = new Tuple<IEnumerable<OrderModel>, int>(data, recsCount);
+
 			ViewBag.Pager = pager;
 
-			return View(data);
+			return View(model);
 		}
 
 		//[Route("ViewOrder")]
@@ -118,9 +121,12 @@ namespace EShop.Areas.Admin.Controllers
 
 			var data = await query.Skip(recSkip).Take(pager.PageSize).ToListAsync();
 
+			// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
+			var model = new Tuple<IEnumerable<OrderDetails>, int>(data, recsCount);
+
 			ViewBag.Pager = pager;
 
-			return View(data);
+			return View(model);
 		}
 
 

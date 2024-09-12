@@ -27,6 +27,7 @@ namespace EShop.Areas.Admin.Controllers
 		[Route("Index")]
 		public async Task<IActionResult> Index(int pg = 1)
 		{
+			// Lấy tất cả danh mục từ cơ sở dữ liệu
 			List<CategoryModel> category = _dataContext.Categories.OrderBy(p => p.Name).ToList(); //33 datas
 
 
@@ -36,19 +37,23 @@ namespace EShop.Areas.Admin.Controllers
 			{
 				pg = 1; //page ==1
 			}
+			// Tổng số danh mục
 			int recsCount = category.Count(); //33 items;
 
 			var pager = new Paginate(recsCount, pg, pageSize);
 
+			// Tính số lượng danh mục cần bỏ qua
 			int recSkip = (pg - 1) * pageSize; //(3 - 1) * 10; 
 
-			//category.Skip(20).Take(10).ToList()
+			// Lấy dữ liệu cho trang hiện tại
+			var data = category.Skip(recSkip).Take(pager.PageSize).ToList(); //category.Skip(20).Take(10).ToList()
 
-			var data = category.Skip(recSkip).Take(pager.PageSize).ToList();
+			// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
+			var model = new Tuple<IEnumerable<CategoryModel>, int>(data, recsCount);
 
 			ViewBag.Pager = pager;
 
-			return View(data);
+			return View(model);
 		}
 
 		[Route("Edit")]

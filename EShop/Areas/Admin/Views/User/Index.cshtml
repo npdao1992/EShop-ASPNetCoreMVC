@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Tuple<IEnumerable<UserWithRoleModel>, int>
+@{
 	ViewData["title"] = "User Listed";
 	var stt = 1;
 
@@ -10,31 +11,32 @@
 		pageNo = pager.CurrentPage;
 	}
 }
-<h3>List User</h3>
-
+<h3>List User (<span style="color: orangered"> @Model.Item2 </span>)</h3>
 <a class="btn btn-primary" asp-action="Create" asp-controller="User">Add User</a>
 <div class="col-md-12">
 	<table class="table">
 		<thead>
 			<tr>
 				<th>No</th>
-				<th>Id</th>
+				<th width="30%">Id</th>
 				<th>User Name</th>
 				<th>Email</th>
-				<th width="40%">PasswordHash</th>
+				<th>PasswordHash</th>
 				<th>Phone</th>
 				<th>Role</th>
 				<th width="25%">Brand Action</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var usersWithRoles in Model){
+			@foreach (var usersWithRoles in Model.Item1){
 				<tr>
 					<th>@stt</th>
 					<td>@usersWithRoles.User.Id</td>
 					<td>@usersWithRoles.User.UserName</td>
 					<td>@usersWithRoles.User.Email</td>
-					<td>@usersWithRoles.User.PasswordHash</td>
+					<td class="password-column" title="@usersWithRoles.User.PasswordHash">
+						@usersWithRoles.User.PasswordHash.Substring(0, 20)...
+					</td>
 					<td>@usersWithRoles.User.PhoneNumber</td>
 					<td>@usersWithRoles.RoleName</td>
 					<td>

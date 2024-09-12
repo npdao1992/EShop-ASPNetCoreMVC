@@ -43,9 +43,12 @@ namespace EShop.Areas.Admin.Controllers
 
 			var data = product.Skip(recSkip).Take(pager.PageSize).ToList();
 
+			// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
+			var model = new Tuple<IEnumerable<ProductModel>, int>(data, recsCount);
+
 			ViewBag.Pager = pager;
 
-			return View(data);
+			return View(model);
 		}
 
 		[Route("Create")]

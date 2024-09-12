@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model IEnumerable<IdentityRole>
+@model Tuple<IEnumerable<IdentityRole>, int>
 @{
 	ViewData["title"] = "Role Listed";
 	var stt = 1;
@@ -12,7 +12,7 @@
 		pageNo = pager.CurrentPage;
 	}
 }
-<h3>List Role</h3>
+<h3>List Role (<span style="color: orangered"> @Model.Item2 </span>)</h3>
 
 <a class="btn btn-primary" asp-action="Create" asp-controller="Role">Add Role</a>
 
@@ -26,7 +26,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model)
+		@foreach (var item in Model.Item1)
 		{
 			<tr>
 				<th scope="row">@stt</th>

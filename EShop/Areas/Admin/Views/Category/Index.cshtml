@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CategoryModel>
+﻿@model Tuple<IEnumerable<CategoryModel>, int>
 @{
 	ViewData["title"] = "Category Listed";
 	var stt = 1;
@@ -11,7 +11,7 @@
 		pageNo = pager.CurrentPage;
 	}
 }
-<h3>List Category</h3>
+<h3>List Category (<span style="color: orangered"> @Model.Item2 </span>)</h3>
 
 <a class="btn btn-primary" asp-action="Create" asp-controller="Category">Add Category</a>
 
@@ -28,13 +28,22 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model)
+		@foreach (var item in Model.Item1)
 		{
 			<tr>
 				<th scope="row">@stt</th>
 				<td>@item.Id</td>
 				<td>@item.Name</td>
-				<td>@item.Description</td>
+				<td class="description-column" title="@item.Description">
+					@if (item.Description.Length > 30)
+					{
+						@(@item.Description.Substring(0, 30) + "...")
+					}
+					else
+					{
+						@item.Description
+					}
+				</td>
 				<td>@item.Slug</td>
 				<td>
 					@if (@item.Status == 1)

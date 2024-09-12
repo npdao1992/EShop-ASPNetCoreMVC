@@ -1,4 +1,4 @@
-﻿@model IEnumerable<OrderDetails>
+﻿@model Tuple<IEnumerable<OrderDetails>, int>
 @{
 	ViewData["title"] = "Order Details";
 	var userName = "";
@@ -13,9 +13,9 @@
 		pageNo = pager.CurrentPage;
 	}
 }
-<h3>List View Order</h3>
+<h3>List View Order (<span style="color: orangered"> @Model.Item2 </span>)</h3>
 <div class="col-md-12">
-	@foreach (var item in Model)
+	@foreach (var item in Model.Item1)
 	{
 		<div style="font-size: 16px; font-weight:bold">
 			Đơn hàng của tài khoản: <span style="color: chocolate">@item.UserName</span>
@@ -38,7 +38,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var item in Model)
+			@foreach (var item in Model.Item1)
 			{
 				<tr>
 					<th>@stt</th>

@@ -1,0 +1,19 @@
+﻿table {
+    width: 100%; /* Đảm bảo bảng sử dụng hết chiều rộng */
+    table-layout: fixed; /* Bố cục bảng cố định để kiểm soát cột */
+}
+.password-column {
+    width: 30%;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Hiển thị dấu ba chấm */
+    white-space: nowrap; /* Ngăn không cho xuống dòng */
+}
+
+.description-column {
+    width: 30%;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Hiển thị dấu ba chấm */
+    white-space: nowrap; /* Ngăn không cho xuống dòng */
+}
+
+
