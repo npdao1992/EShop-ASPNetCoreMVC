@@ -2,15 +2,24 @@
 @{
 	ViewData["title"] = "Product Listed";
 	var stt = 1;
+
+	Paginate pager = new Paginate();
+	int pageNo = 0;
+	if (ViewBag.Pager != null)
+	{
+		pager = ViewBag.Pager;
+		pageNo = pager.CurrentPage;
+	}
 }
 <h3>List Products</h3>
 
-<a asp-action="Create" asp-controller="Product">Add Product</a>
+<a class="btn btn-primary" asp-action="Create" asp-controller="Product">Add Product</a>
 
 <table class="table">
 	<thead>
 		<tr>
-			<th scope="col">#</th>
+			<th scope="col">No</th>
+			<th scope="col">Product Id</th>
 			<th scope="col">Product Name</th>
 			<th scope="col">Product Description</th>
 			<th scope="col">Product Image</th>
@@ -26,6 +35,7 @@
 		{
 			<tr>
 				<th scope="row">@stt</th>
+				<td>@item.Id</td>
 				<td>@item.Name</td>
 				<td>@item.Description</td>
 				<td><img src="~/media/products/@item.Image" width="120px"/></td>
@@ -42,3 +52,6 @@
 		}
 	</tbody>
 </table>
+
+@*Phân trang ở đây*@
+<partial name="_paging" model="@pager" />

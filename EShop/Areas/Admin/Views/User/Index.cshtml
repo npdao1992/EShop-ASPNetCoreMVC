@@ -1,6 +1,14 @@
 ﻿@{
 	ViewData["title"] = "User Listed";
 	var stt = 1;
+
+	Paginate pager = new Paginate();
+	int pageNo = 0;
+	if (ViewBag.Pager != null)
+	{
+		pager = ViewBag.Pager;
+		pageNo = pager.CurrentPage;
+	}
 }
 <h3>List User</h3>
 
@@ -9,7 +17,7 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<th>#</th>
+				<th>No</th>
 				<th>Id</th>
 				<th>User Name</th>
 				<th>Email</th>
@@ -39,3 +47,7 @@
 		</tbody>
 	</table>
 </div>
+
+
+@*Phân trang ở đây*@
+<partial name="_paging" model="@pager" />

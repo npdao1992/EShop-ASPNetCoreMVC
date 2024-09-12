@@ -4,6 +4,14 @@
 	var userName = "";
 	var toTal = 0;
 	var stt = 1;
+
+	Paginate pager = new Paginate();
+	int pageNo = 0;
+	if (ViewBag.Pager != null)
+	{
+		pager = ViewBag.Pager;
+		pageNo = pager.CurrentPage;
+	}
 }
 <h3>List View Order</h3>
 <div class="col-md-12">
@@ -19,7 +27,7 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<th scope="col">#</th>
+				<th scope="col">No</th>
 				@* <th scope="col" width="20%">Order Code</th>
 				<th scope="col">UserName</th> *@
 				<th scope="col">Product Name</th>
@@ -61,5 +69,10 @@
 		</tbody>
 	</table>
 
-	<a asp-action="Index">Back to List Orders</a>
 </div>
+
+
+@*Phân trang ở đây*@
+<partial name="_paging" model="@pager" />
+
+<a asp-action="Index">Back to List Orders</a>

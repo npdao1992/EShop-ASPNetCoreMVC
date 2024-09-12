@@ -24,17 +24,50 @@ namespace EShop.Areas.Admin.Controllers
 			_dataContext = context;
 		}
 
+		//[HttpGet]
+		//[Route("Index")]
+		//public async Task<IActionResult> Index()
+		//{
+		//	var usersWithRoles = await (from u in _dataContext.Users
+		//								join ur in _dataContext.UserRoles on u.Id equals ur.UserId
+		//								join r in _dataContext.Roles on ur.RoleId equals r.Id
+		//								select new { User = u, RoleName = r.Name })
+		//								.ToListAsync();
+		//	//return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
+		//	return View(usersWithRoles);
+		//}	
+		
 		[HttpGet]
 		[Route("Index")]
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(int pg = 1)
 		{
-			var usersWithRoles = await (from u in _dataContext.Users
-										join ur in _dataContext.UserRoles on u.Id equals ur.UserId
-										join r in _dataContext.Roles on ur.RoleId equals r.Id
-										select new { User = u, RoleName = r.Name })
-										.ToListAsync();
-			//return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
-			return View(usersWithRoles);
+			List<UserWithRoleModel> usersWithRoles = (from u in _dataContext.Users
+													  join ur in _dataContext.UserRoles on u.Id equals ur.UserId
+													  join r in _dataContext.Roles on ur.RoleId equals r.Id
+													  select new UserWithRoleModel
+													  {
+														  User = u,
+														  RoleName = r.Name
+													  })
+										  .ToList();
+
+			const int pageSize = 10;
+
+			if (pg < 1)
+			{
+				pg = 1;
+			}
+			int recsCount = usersWithRoles.Count();
+
+			var pager = new Paginate(recsCount, pg, pageSize);
+
+			int recSkip = (pg - 1) * pageSize;
+
+			var data = usersWithRoles.Skip(recSkip).Take(pager.PageSize).ToList();
+
+			ViewBag.Pager = pager;
+
+			return View(data);
 		}
 
 		[HttpGet]
@@ -138,6 +171,12 @@ namespace EShop.Areas.Admin.Controllers
 		[Route("Edit")]
 		public async Task<IActionResult> Edit(string id, AppUserModel user)
 		{
+			if (id != user.Id)
+			{
+				TempData["error"] = "ID không khớp.";
+				return RedirectToAction("Index", "User");
+			}
+
 			var existingUser = await _userManager.FindByIdAsync(id); // Lấy user dựa vào id
 			if (existingUser == null)
 			{
@@ -152,9 +191,27 @@ namespace EShop.Areas.Admin.Controllers
 				existingUser.RoleId = user.RoleId;
 				// End Update ohter user properties
 
+				// Update Rolein UserRoles
+				var currentRoles = await _userManager.GetRolesAsync(existingUser);
+				var selectedRole = await _roleManager.FindByIdAsync(user.RoleId);
+
+				// Delete Role Old
+				if (currentRoles.Any())
+				{
+					await _userManager.RemoveFromRolesAsync(existingUser, currentRoles);
+				}
+
+				// Add Role New
+				if (selectedRole != null)
+				{
+					await _userManager.AddToRoleAsync(existingUser, selectedRole.Name);
+				}
+				// End Update Role in UserRoles
+
 				var updateUserResult = await _userManager.UpdateAsync(existingUser);
 				if (updateUserResult.Succeeded)
 				{
+					TempData["success"] = "Cập nhật User thành công";
 					return RedirectToAction("Index", "User");
 				}
 				else

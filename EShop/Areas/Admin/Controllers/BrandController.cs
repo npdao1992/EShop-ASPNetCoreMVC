@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EShop.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-	//[Route("Admin/Brand")]
+	[Route("Admin/Brand")]
 	[Authorize(Roles = "Admin,Publisher,Author")]
 	public class BrandController : Controller
 	{
@@ -17,21 +17,47 @@ namespace EShop.Areas.Admin.Controllers
 			_dataContext = context;
 		}
 
-		public async Task<IActionResult> Index()
+		//public async Task<IActionResult> Index()
+		//{
+		//	return View(await _dataContext.Brands.OrderByDescending(p => p.Id).ToListAsync());
+		//}
+		[Route("Index")]
+		public async Task<IActionResult> Index(int pg = 1)
 		{
-			return View(await _dataContext.Brands.OrderByDescending(p => p.Id).ToListAsync());
-		}
+			List<BrandModel> brand = _dataContext.Brands.OrderBy(p => p.Name).ToList();
 
+			const int pageSize = 10;
+
+			if (pg < 1)
+			{
+				pg = 1;
+			}
+			int recsCount = brand.Count();
+
+			var pager = new Paginate(recsCount, pg, pageSize);
+
+			int recSkip = (pg - 1) * pageSize; 
+
+			var data = brand.Skip(recSkip).Take(pager.PageSize).ToList();
+
+			ViewBag.Pager = pager;
+
+			return View(data);
+		}
+		[Route("Edit")]
 		public async Task<IActionResult> Edit(int Id)
 		{
 			BrandModel brand = await _dataContext.Brands.FindAsync(Id);
 			return View(brand);
 		}
+
+		[Route("Create")]
 		public async Task<IActionResult> Create()
 		{
 			return View();
 		}
 
+		[Route("Create")]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(BrandModel brand)
@@ -73,6 +99,7 @@ namespace EShop.Areas.Admin.Controllers
 			return View(brand);
 		}
 
+		[Route("Edit")]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Edit(BrandModel brand)
@@ -124,6 +151,7 @@ namespace EShop.Areas.Admin.Controllers
 			return View(brand);
 		}
 
+		[Route("Delete")]
 		public async Task<IActionResult> Delete(int Id)
 		{
 			BrandModel brand = await _dataContext.Brands.FindAsync(Id);

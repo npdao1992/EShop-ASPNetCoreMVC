@@ -2,15 +2,24 @@
 @{
 	ViewData["title"] = "Brand Listed";
 	var stt = 1;
+
+	Paginate pager = new Paginate();
+	int pageNo = 0;
+	if (ViewBag.Pager != null)
+	{
+		pager = ViewBag.Pager;
+		pageNo = pager.CurrentPage;
+	}
 }
 <h3>List Brand</h3>
 
-<a asp-action="Create" asp-controller="Brand">Add Brand</a>
+<a class="btn btn-primary" asp-action="Create" asp-controller="Brand">Add Brand</a>
 
 <table class="table">
 	<thead>
 		<tr>
-			<th scope="col">#</th>
+			<th scope="col">No</th>
+			<th scope="col">Brand Id</th>
 			<th scope="col">Brand Name</th>
 			<th scope="col">Brand Description</th>
 			<th scope="col">Brand Slug</th>
@@ -23,6 +32,7 @@
 		{
 			<tr>
 				<th scope="row">@stt</th>
+				<td>@item.Id</td>
 				<td>@item.Name</td>
 				<td>@item.Description</td>
 				<td>@item.Slug</td>
@@ -45,3 +55,6 @@
 		}
 	</tbody>
 </table>
+
+@*Phân trang ở đây*@
+<partial name="_paging" model="@pager" />
