@@ -19,9 +19,9 @@
 				<div class="product-image-wrapper">
 					<div class="single-products">
 						<div class="productinfo text-center">
-							<a asp-action="Details" asp-controller="Product" asp-route-id="@item.Id">
+							<a asp-action="Detail" asp-controller="Product" asp-route-id="@item.Id">
 								<img src="~/media/products/@item.Image" alt="@item.Name" width="100%" />
-								<h2>$@item.Price</h2>
+								<h2>@String.Format("{0:N2}", @item.Price.ToString("#,##0 VNĐ"))</h2>
 								<p>@item.Name</p>
 								<p>Danh mục : @item.Category.Name</p>
 								<p>Thương hiệu : @item.Brand.Name</p>
@@ -44,6 +44,7 @@
 
 </div>
 
+<!--Cập nhật ajax Thêm vào giỏ hàng-->
 @section Scripts {
 	<script>
 		$(document).ready(function () {

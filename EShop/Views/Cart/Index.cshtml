@@ -22,7 +22,7 @@
 			<table class="table table-condensed">
 				<thead>
 					<tr class="cart_menu">
-						<td class="image">Item</td>
+						<td class="image" width="10%">Item</td>
 						<td class="description" width="30%">Name</td>
 						<td class="price">Price</td>
 						<td class="quantity">Quantity</td>
@@ -37,13 +37,13 @@
 						{
 							<tr>
 								<td class="cart_product">
-									<a href=""><img src="~/media/products/@item.Image" alt="" style="width: 70px; height: auto;"></a>
+									<a><img src="~/media/products/@item.Image" alt="" style="width: 70px; height: auto;"></a>
 								</td>
 								<td class="cart_description">
 									<h4><a href="">@item.ProductName</a></h4>
 								</td>
 								<td class="cart_price">
-									<p>$@item.Price.ToString()</p>
+									<p>@String.Format("{0:N2}", @item.Price.ToString("#,##0 VNĐ"))</p>
 								</td>
 								<td class="cart_quantity">
 									<a class="btn btn-default btn-sm" asp-controller="Cart" asp-action="Increase" asp-route-id="@item.ProductId"> + </a>
@@ -52,7 +52,7 @@
 									@* <a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Remove" asp-route-id="@item.ProductId"> Remove </a> *@
 								</td>
 								<td class="cart_total">
-									<p class="cart_total_price">$@Model.CartItems.Where(x => x.ProductId == item.ProductId).Sum(x => x.Quantity * x.Price).ToString()</p>
+									<p class="cart_total_price">@String.Format("{0:N2}", @Model.CartItems.Where(x => x.ProductId == item.ProductId).Sum(x => x.Quantity * x.Price).ToString("#,##0 VNĐ"))</p>
 								</td>
 								<td class="cart_delete text-center">
 									<a class="cart_quantity_delete" asp-controller="Cart" asp-action="Remove" asp-route-id="@item.ProductId"><i class="fa fa-times"></i></a>
@@ -65,7 +65,7 @@
 							</td>
 
 							<td class="align-middle">
-								<p class="cart_total_price">$@Model.GrandTotal.ToString()</p>
+								<p class="cart_total_price">@String.Format("{0:N2}", @Model.GrandTotal.ToString("#,##0 VNĐ"))</p>
 							</td>
 
 							<td class="align-middle text-center">

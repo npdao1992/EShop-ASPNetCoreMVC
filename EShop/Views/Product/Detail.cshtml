@@ -41,7 +41,7 @@
 					@* <img src="~/images/@Model.Image" class="newarrival" alt="@Model.Name" /> *@
 					<h2>@Model.Name</h2>
 					<span>
-						<span>US $@Model.Price</span>
+						<span>@String.Format("{0:N2}", @Model.Price.ToString("#,##0 VNĐ"))</span>
 						<label>Quantity: 1</label>
 						<input type="text" value="3" />
 						<button type="button" class="btn btn-fefault cart">
@@ -207,85 +207,32 @@
 
 		<div class="recommended_items">
 			<!--recommended_items-->
-			<h2 class="title text-center">recommended items</h2>
+			<h2 class="title text-center">Related Products</h2>
 
 			<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
 				<div class="carousel-inner">
 					<div class="item active">
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products">
-									<div class="productinfo text-center">
-										<img src="images/home/recommend1.jpg" alt="" />
-										<h2>$56</h2>
-										<p>Easy Polo Black Edition</p>
-										<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+
+						@foreach (var relatedProducts in ViewBag.RelatedProducts as IEnumerable<ProductModel>)
+						{
+							<div class="col-sm-4">
+								<div class="product-image-wrapper">
+									<div class="single-products">
+										<div class="productinfo text-center">
+											<a asp-action="Detail" asp-controller="Product" asp-route-id="@relatedProducts.Id">
+												<img src="~/media/products/@relatedProducts.Image" alt="@relatedProducts.Name" width="100%" />
+												<h2>@String.Format("{0:N2}", @relatedProducts.Price.ToString("#,##0 VNĐ"))</h2>
+												<p>@relatedProducts.Name</p>
+												<p>Danh mục : @relatedProducts.Category.Name</p>
+												<p>Thương hiệu : @relatedProducts.Brand.Name</p>
+											</a>
+											<a class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-id="@relatedProducts.Id"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+											@* <button class="btn btn-default add-to-cart" data-product_id="@relatedProducts.Id"><i class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button> *@
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products">
-									<div class="productinfo text-center">
-										<img src="images/home/recommend2.jpg" alt="" />
-										<h2>$56</h2>
-										<p>Easy Polo Black Edition</p>
-										<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products">
-									<div class="productinfo text-center">
-										<img src="images/home/recommend3.jpg" alt="" />
-										<h2>$56</h2>
-										<p>Easy Polo Black Edition</p>
-										<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products">
-									<div class="productinfo text-center">
-										<img src="images/home/recommend1.jpg" alt="" />
-										<h2>$56</h2>
-										<p>Easy Polo Black Edition</p>
-										<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products">
-									<div class="productinfo text-center">
-										<img src="images/home/recommend2.jpg" alt="" />
-										<h2>$56</h2>
-										<p>Easy Polo Black Edition</p>
-										<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products">
-									<div class="productinfo text-center">
-										<img src="images/home/recommend3.jpg" alt="" />
-										<h2>$56</h2>
-										<p>Easy Polo Black Edition</p>
-										<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-									</div>
-								</div>
-							</div>
-						</div>
+						}
 					</div>
 				</div>
 				<a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
