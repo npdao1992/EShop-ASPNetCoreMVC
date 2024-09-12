@@ -41,15 +41,30 @@ namespace EShop.Areas.Admin.Controllers
 		[Route("Index")]
 		public async Task<IActionResult> Index(int pg = 1)
 		{
-			List<UserWithRoleModel> usersWithRoles = (from u in _dataContext.Users
-													  join ur in _dataContext.UserRoles on u.Id equals ur.UserId
-													  join r in _dataContext.Roles on ur.RoleId equals r.Id
-													  select new UserWithRoleModel
-													  {
-														  User = u,
-														  RoleName = r.Name
-													  })
-										  .ToList();
+			// Lấy ra danh sách các user được thêm role (Nếu không có role sẽ không được hiển thị ra)
+			//List<UserWithRoleModel> usersWithRoles = (from u in _dataContext.Users
+			//										  join ur in _dataContext.UserRoles on u.Id equals ur.UserId
+			//										  join r in _dataContext.Roles on ur.RoleId equals r.Id
+			//										  select new UserWithRoleModel
+			//										  {
+			//											  User = u,
+			//											  RoleName = r.Name
+			//										  })
+			//							  .OrderBy(u => u.User.UserName).ToList();
+			// Lấy ra tất cả user ( Kể cả không có Role)
+			var usersWithRoles = (from u in _dataContext.Users
+								  join ur in _dataContext.UserRoles on u.Id equals ur.UserId into userRoles
+								  from ur in userRoles.DefaultIfEmpty()
+								  join r in _dataContext.Roles on ur.RoleId equals r.Id into roles
+								  from r in roles.DefaultIfEmpty()
+								  select new UserWithRoleModel
+								  {
+									  User = u,
+									  RoleName = r != null ? r.Name : ""
+								  })
+					  .OrderBy(u => u.User.UserName)
+					  .ToList();
+
 
 			const int pageSize = 10;
 
