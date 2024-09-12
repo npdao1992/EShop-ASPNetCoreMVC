@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 namespace EShop.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-	[Authorize]
+	//[Route("Admin/Brand")]
+	[Authorize(Roles = "Admin,Publisher,Author")]
 	public class BrandController : Controller
 	{
 		private readonly DataContext _dataContext;

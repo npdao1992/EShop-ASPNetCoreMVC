@@ -65,10 +65,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Identity
-app.UseAuthentication();
+// Identity on UseAuthorization
+app.UseAuthentication(); // Login
 
-app.UseAuthorization();
+app.UseAuthorization(); // Check role
 
 app.MapControllerRoute(
 	name: "Areas",

@@ -11,23 +11,30 @@ namespace EShop.Areas.Admin.Controllers
 
 	[Area("Admin")]
 	[Route("Admin/User")]
-	[Authorize]
+	[Authorize(Roles = "Admin")]
 	public class UserController : Controller
 	{
 		private readonly UserManager<AppUserModel> _userManager;
 		private readonly RoleManager<IdentityRole> _roleManager;
 		private readonly DataContext _dataContext;
-		public UserController(UserManager<AppUserModel> userManager, RoleManager<IdentityRole> roleManager)
+		public UserController(DataContext context, UserManager<AppUserModel> userManager, RoleManager<IdentityRole> roleManager)
 		{
 			_userManager = userManager;
 			_roleManager = roleManager;
+			_dataContext = context;
 		}
 
 		[HttpGet]
 		[Route("Index")]
 		public async Task<IActionResult> Index()
 		{
-			return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
+			var usersWithRoles = await (from u in _dataContext.Users
+										join ur in _dataContext.UserRoles on u.Id equals ur.UserId
+										join r in _dataContext.Roles on ur.RoleId equals r.Id
+										select new { User = u, RoleName = r.Name })
+										.ToListAsync();
+			//return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
+			return View(usersWithRoles);
 		}
 
 		[HttpGet]
@@ -71,9 +78,23 @@ namespace EShop.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var createUserResult = await _userManager.CreateAsync(user, user.PasswordHash); // Tạo user
+				var createUserResult = await _userManager.CreateAsync(user, user.PasswordHash); // Tạo user dựa vào email
 				if (createUserResult.Succeeded)
 				{
+					var createUser = await _userManager.FindByEmailAsync(user.Email);
+					var userId = createUser.Id; // Lấy user
+					var role = _roleManager.FindByIdAsync(user.RoleId); // Lấy RoleId
+
+					// Gán quyền
+					var addToRoleRsult = await _userManager.AddToRoleAsync(createUser, role.Result.Name);
+					if (!addToRoleRsult.Succeeded)
+					{
+						foreach (var error in createUserResult.Errors)
+						{
+							ModelState.AddModelError(string.Empty, error.Description);
+						}
+					}
+
 					return RedirectToAction("Index", "User");
 				}
 				else
@@ -148,7 +169,7 @@ namespace EShop.Areas.Admin.Controllers
 
 			// Model validation failed
 			TempData["error"] = "Model validation failed";
-			var errors = ModelState.Values.SelectMany(v =>v.Errors.Select(e =>e.ErrorMessage)).ToList();
+			var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)).ToList();
 			string errorMessage = string.Join("\n", errors);
 
 			return View(existingUser);
