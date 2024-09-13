@@ -1,22 +1,14 @@
-﻿@model Tuple<IEnumerable<OrderDetails>, int>
+﻿@model IEnumerable<OrderDetails>
 @{
 	ViewData["title"] = "Order Details";
 	var userName = "";
 	decimal toTal = 0;
 	decimal subtoTal = 0;
 	var stt = 1;
-
-	Paginate pager = new Paginate();
-	int pageNo = 0;
-	if (ViewBag.Pager != null)
-	{
-		pager = ViewBag.Pager;
-		pageNo = pager.CurrentPage;
-	}
 }
-<h3>List View Order (<span style="color: orangered"> @Model.Item2 </span>)</h3>
+<h3>List View Order (<span style="color: orangered"> @Model.Count() </span>)</h3>
 <div class="col-md-12">
-	@foreach (var item in Model.Item1)
+	@foreach (var item in Model)
 	{
 		<div style="font-size: 16px; font-weight:bold">
 			Đơn hàng của tài khoản: <span style="color: chocolate">@item.UserName</span>
@@ -25,37 +17,38 @@
 		</div>
 		break;
 	}
-	<table class="table">
+
+	<table class="table" id="myTable">
 		<thead>
 			<tr>
-				<th scope="col">No</th>
+				<th>No</th>
 				@* <th scope="col" width="20%">Order Code</th>
 				<th scope="col">UserName</th> *@
-				<th scope="col">Id</th>
-				<th scope="col">Product Name</th>
-				<th scope="col">Product Image</th>
-				<th scope="col">Product Price</th>
-				<th scope="col">Quantity</th>
-				<th scope="col">SubTotal</th>
+				<th style="text-align:center">Id</th>
+				<th style="text-align:center">Product Name</th>
+				<th style="text-align:center">Product Image</th>
+				<th style="text-align:center">Product Price</th>
+				<th style="text-align:center">Quantity</th>
+				<th style="text-align:center">SubTotal</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var item in Model.Item1)
+			@foreach (var item in Model)
 			{
 				subtoTal = item.Quantity * item.Price; // Số lượng n* đơn giá
 				toTal += subtoTal;
 				<tr>
 					<input type="hidden" asp-for="@item.OrderCode" class="getId" />
-					<th>@stt</th>
+					<th style="text-align:center">@stt</th>
 					@* <th scope="row">@item.OrderCode</th>
 				<td>@item.UserName</td> *@
-					<td>@item.Id</td>
+					<td style="text-align:center">@item.Id</td>
 					<td>@item.Product.Name</td>
-					<td><img src="~/media/products/@item.Product.Image" width="70px" height="100%" /></td>
-					<td>@String.Format("{0:N2}", item.Price.ToString("C"))</td>
-					<td>@String.Format("{0:N2}", item.Quantity)</td>
+					<td style="text-align:center"><img src="~/media/products/@item.Product.Image" width="70px" height="100%" /></td>
+					<td style ="text-align:right">@String.Format("{0:N2}", item.Price.ToString("#,##0 VNĐ"))</td>
+					<td style="text-align:center">@String.Format("{0:N2}", item.Quantity)</td>
 
-					<td>@subtoTal.ToString("C")</td>
+					<td style="text-align:right">@subtoTal.ToString("#,##0 VNĐ")</td>
 					@* <td> @String.Format("{0:N2}", item.Quantity * item.Price)</td> *@
 
 
@@ -76,24 +69,25 @@
 				</tr>
 				stt++;
 			}
+		</tbody>
+		
+		<tfoot>
 			<tr>
-				<th colspan="5">Total:</th>
-				<td>@toTal.ToString("C")</td>
-				<td>
+				<th colspan="5" style="text-align:center">Total:</th>
+
+				<th colspan="1" style="text-align:right">@String.Format("{0:N2}", toTal.ToString("#,##0 VNĐ"))</th>
+				<th style="text-align:center">
 					<select class="form-control select-update-order">
 						<option value="1">Đơn hàng mới</option>
 						<option value="0">Đã xử lý</option>
 					</select>
-				</td>
+				</th>
 			</tr>
-		</tbody>
-	</table>
+		</tfoot>
 
+	</table>
 </div>
 
-
-@*Phân trang ở đây*@
-<partial name="_paging" model="@pager" />
 
 <a asp-action="Index">Back to List Orders</a>
 

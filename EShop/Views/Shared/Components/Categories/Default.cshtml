@@ -1,5 +1,45 @@
 ﻿@model IEnumerable<CategoryModel>
 
+<div class="panel-group" id="categoryAccordion">
+
+    <!-- Danh sách các category với tính năng thu gọn -->
+    <div class="collapse in" id="categoryMenu"> <!-- 'in' class để mặc định mở khi collapse -->
+        <!-- Hiển thị 5 category đầu tiên -->
+        @foreach(var item in Model.Take(5)) 
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a asp-action="Index" asp-controller="Category" asp-route-Slug="@item.Slug">@item.Name</a>
+                    </h4>
+                </div>
+            </div>
+        }
+
+        <div id="moreCategories" style="display: none;"> <!-- Ẩn các category còn lại -->
+            @foreach(var item in Model.Skip(5))
+            {
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a asp-action="Index" asp-controller="Category" asp-route-Slug="@item.Slug">@item.Name</a>
+                        </h4>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Nút "Xem thêm" -->
+        <button id="toggleCategoriesBtn" class="btn btn-primary" style="width: 100%; margin-top: 10px; border-radius: 10px;">
+            Xem thêm
+        </button>
+    </div>
+</div>
+
+
+
+@* @model IEnumerable<CategoryModel>
+
 	@foreach(var item in Model)
 {
 	<div class="panel panel-default">
@@ -7,4 +47,4 @@
 			<h4 class="panel-title"><a asp-action="Index" asp-controller="Category" asp-route-Slug="@item.Slug">@item.Name</a></h4>
 		</div>
 	</div>
-}
+} *@

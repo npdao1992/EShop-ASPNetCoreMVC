@@ -17,45 +17,45 @@ namespace EShop.Areas.Admin.Controllers
 			_dataContext = context;
 		}
 
-		//[Route("Index")]
-		//public async Task<IActionResult> Index()
-		//{
-		//	return View(await _dataContext.Orders.OrderByDescending(p => p.Id).ToListAsync());
-		//}	
-
 		[Route("Index")]
-		public async Task<IActionResult> Index(int pg = 1)
+		public async Task<IActionResult> Index()
 		{
-			List<OrderModel> order = _dataContext.Orders.OrderByDescending(p => p.CreatedDate).ToList();
-
-			const int pageSize = 10;
-
-			if (pg < 1)
-			{
-				pg = 1;
-			}
-			int recsCount = order.Count();
-
-			var pager = new Paginate(recsCount, pg, pageSize);
-
-			int recSkip = (pg - 1) * pageSize;
-
-			var data = order.Skip(recSkip).Take(pager.PageSize).ToList();
-
-			// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
-			var model = new Tuple<IEnumerable<OrderModel>, int>(data, recsCount);
-
-			ViewBag.Pager = pager;
-
-			return View(model);
+			return View(await _dataContext.Orders.OrderByDescending(p => p.Id).ToListAsync());
 		}
 
-		//[Route("ViewOrder")]
-		//public async Task<IActionResult> ViewOrder(string ordercode)
+		//[Route("Index")]
+		//public async Task<IActionResult> Index(int pg = 1)
 		//{
-		//	var DetailsOrder = await _dataContext.OrderDetails.Include(o => o.Product).Where(o => o.OrderCode == ordercode).ToListAsync();
-		//	return View(DetailsOrder);
+		//	List<OrderModel> order = _dataContext.Orders.OrderByDescending(p => p.CreatedDate).ToList();
+
+		//	const int pageSize = 10;
+
+		//	if (pg < 1)
+		//	{
+		//		pg = 1;
+		//	}
+		//	int recsCount = order.Count();
+
+		//	var pager = new Paginate(recsCount, pg, pageSize);
+
+		//	int recSkip = (pg - 1) * pageSize;
+
+		//	var data = order.Skip(recSkip).Take(pager.PageSize).ToList();
+
+		//	// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
+		//	var model = new Tuple<IEnumerable<OrderModel>, int>(data, recsCount);
+
+		//	ViewBag.Pager = pager;
+
+		//	return View(model);
 		//}
+
+		[Route("ViewOrder")]
+		public async Task<IActionResult> ViewOrder(string ordercode)
+		{
+			var DetailsOrder = await _dataContext.OrderDetails.Include(o => o.Product).Where(o => o.OrderCode == ordercode).ToListAsync();
+			return View(DetailsOrder);
+		}
 
 		/*
 		 Phân trang sử dụng ToList() tải toàn bộ dữ liệu lần đầu
@@ -96,38 +96,38 @@ namespace EShop.Areas.Admin.Controllers
 		việc tải toàn bộ dữ liệu vào bộ nhớ trước khi phân trang.
 		Thay vào đó, thực hiện phân trang trực tiếp trong truy vấn.
 		 */
-		[Route("ViewOrder")]
-		public async Task<IActionResult> ViewOrder(int pg = 1, string ordercode = "")
-		{
-			if (string.IsNullOrWhiteSpace(ordercode))
-			{
-				// Nếu ordercode không hợp lệ, trả về lỗi hoặc một trang thông báo
-				TempData["error"] = "Mã đơn hàng không hợp lệ.";
-				return RedirectToAction("Index"); // Hoặc trang khác phù hợp
-			}
+		//[Route("ViewOrder")]
+		//public async Task<IActionResult> ViewOrder(int pg = 1, string ordercode = "")
+		//{
+		//	if (string.IsNullOrWhiteSpace(ordercode))
+		//	{
+		//		// Nếu ordercode không hợp lệ, trả về lỗi hoặc một trang thông báo
+		//		TempData["error"] = "Mã đơn hàng không hợp lệ.";
+		//		return RedirectToAction("Index"); // Hoặc trang khác phù hợp
+		//	}
 
-			// Tính toán phân trang
-			const int pageSize = 10;
-			var query = _dataContext.OrderDetails
-				.Include(o => o.Product)
-				.Where(o => o.OrderCode == ordercode)
-				.OrderBy(o => o.Product.Name);
+		//	// Tính toán phân trang
+		//	const int pageSize = 10;
+		//	var query = _dataContext.OrderDetails
+		//		.Include(o => o.Product)
+		//		.Where(o => o.OrderCode == ordercode)
+		//		.OrderBy(o => o.Product.Name);
 
-			int recsCount = await query.CountAsync(); // Số lượng bản ghi tổng cộng
+		//	int recsCount = await query.CountAsync(); // Số lượng bản ghi tổng cộng
 
-			var pager = new Paginate(recsCount, pg, pageSize);
+		//	var pager = new Paginate(recsCount, pg, pageSize);
 
-			int recSkip = (pg - 1) * pageSize;
+		//	int recSkip = (pg - 1) * pageSize;
 
-			var data = await query.Skip(recSkip).Take(pager.PageSize).ToListAsync();
+		//	var data = await query.Skip(recSkip).Take(pager.PageSize).ToListAsync();
 
-			// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
-			var model = new Tuple<IEnumerable<OrderDetails>, int>(data, recsCount);
+		//	// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
+		//	var model = new Tuple<IEnumerable<OrderDetails>, int>(data, recsCount);
 
-			ViewBag.Pager = pager;
+		//	ViewBag.Pager = pager;
 
-			return View(model);
-		}
+		//	return View(model);
+		//}
 
 		[HttpPost]
 		[Route("UpdateOrder")]

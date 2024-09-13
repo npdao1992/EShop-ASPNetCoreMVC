@@ -20,38 +20,38 @@ namespace EShop.Areas.Admin.Controllers
 			_roleManager = roleManager;
 		}
 
-		//[Route("Index")]
-		//public async Task<IActionResult> Index()
-		//{
-		//	return View(await _dataContext.Roles.OrderByDescending(p => p.Id).ToListAsync());
-		//}
-
 		[Route("Index")]
-		public async Task<IActionResult> Index(int pg = 1)
+		public async Task<IActionResult> Index()
 		{
-			List<IdentityRole> role = _dataContext.Roles.OrderBy(r => r.Name).ToList();
-
-			const int pageSize = 10;
-
-			if (pg < 1)
-			{
-				pg = 1;
-			}
-			int recsCount = role.Count();
-
-			var pager = new Paginate(recsCount, pg, pageSize);
-
-			int recSkip = (pg - 1) * pageSize;
-
-			var data = role.Skip(recSkip).Take(pager.PageSize).ToList();
-
-			// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
-			var model = new Tuple<IEnumerable<IdentityRole>, int>(data, recsCount);
-
-			ViewBag.Pager = pager;
-
-			return View(model);
+			return View(await _dataContext.Roles.OrderByDescending(p => p.Id).ToListAsync());
 		}
+
+		//[Route("Index")]
+		//public async Task<IActionResult> Index(int pg = 1)
+		//{
+		//	List<IdentityRole> role = _dataContext.Roles.OrderBy(r => r.Name).ToList();
+
+		//	const int pageSize = 10;
+
+		//	if (pg < 1)
+		//	{
+		//		pg = 1;
+		//	}
+		//	int recsCount = role.Count();
+
+		//	var pager = new Paginate(recsCount, pg, pageSize);
+
+		//	int recSkip = (pg - 1) * pageSize;
+
+		//	var data = role.Skip(recSkip).Take(pager.PageSize).ToList();
+
+		//	// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
+		//	var model = new Tuple<IEnumerable<IdentityRole>, int>(data, recsCount);
+
+		//	ViewBag.Pager = pager;
+
+		//	return View(model);
+		//}
 
 		[HttpGet]
 		[Route("Create")]

@@ -19,37 +19,39 @@ namespace EShop.Areas.Admin.Controllers
 			_dataContext = context;
 			_webHostEnvironment = webHostEnvironment;
 		}
-		//public async Task<IActionResult> Index()
-		//{
-		//	return View(await _dataContext.Products.OrderByDescending(p => p.Id).Include(p => p.Category).Include(p => p.Brand).ToListAsync());
-		//}
 
 		[Route("Index")]
-		public async Task<IActionResult> Index(int pg = 1)
+		public async Task<IActionResult> Index()
 		{
-			List<ProductModel> product = _dataContext.Products.OrderBy(p => p.Name).Include(p => p.Category).Include(p => p.Brand).ToList();
-
-			const int pageSize = 10;
-
-			if (pg < 1)
-			{
-				pg = 1;
-			}
-			int recsCount = product.Count();
-
-			var pager = new Paginate(recsCount, pg, pageSize);
-
-			int recSkip = (pg - 1) * pageSize;
-
-			var data = product.Skip(recSkip).Take(pager.PageSize).ToList();
-
-			// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
-			var model = new Tuple<IEnumerable<ProductModel>, int>(data, recsCount);
-
-			ViewBag.Pager = pager;
-
-			return View(model);
+			return View(await _dataContext.Products.OrderByDescending(p => p.Id).Include(p => p.Category).Include(p => p.Brand).ToListAsync());
 		}
+
+		//[Route("Index")]
+		//public async Task<IActionResult> Index(int pg = 1)
+		//{
+		//	List<ProductModel> product = _dataContext.Products.OrderBy(p => p.Name).Include(p => p.Category).Include(p => p.Brand).ToList();
+
+		//	const int pageSize = 10;
+
+		//	if (pg < 1)
+		//	{
+		//		pg = 1;
+		//	}
+		//	int recsCount = product.Count();
+
+		//	var pager = new Paginate(recsCount, pg, pageSize);
+
+		//	int recSkip = (pg - 1) * pageSize;
+
+		//	var data = product.Skip(recSkip).Take(pager.PageSize).ToList();
+
+		//	// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
+		//	var model = new Tuple<IEnumerable<ProductModel>, int>(data, recsCount);
+
+		//	ViewBag.Pager = pager;
+
+		//	return View(model);
+		//}
 
 		[Route("Create")]
 		public IActionResult Create()

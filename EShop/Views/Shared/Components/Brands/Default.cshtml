@@ -1,10 +1,121 @@
 ﻿@model IEnumerable<BrandModel>
 
-	@foreach(var item in Model)
-{
-	<div class="brands-name">
-		<ul class="nav nav-pills nav-stacked">
-			<li><a asp-action="Index" asp-controller="Brand" asp-route-Slug="@item.Slug"> <span class="pull-right">(50)</span>@item.Name</a></li>
-		</ul>
-	</div>
-}
+<div class="brands-name">
+  @*   <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#brandMenu" aria-expanded="false" aria-controls="brandMenu">
+        Danh sách thương hiệu <span class="badge" style="background-color: #FE980F">(@Model.Count())</span>
+    </button>
+ *@
+    <div class="collapse in" id="brandMenu"> <!-- 'in' class để mặc định mở khi collapse -->
+        <ul class="nav nav-pills nav-stacked">
+            <!-- Hiển thị 5 thương hiệu đầu tiên -->
+            @foreach (var item in Model.Take(5))
+            {
+                <li>
+                    <a asp-action="Index" asp-controller="Brand" asp-route-Slug="@item.Slug">
+                        @item.Name
+                        <span class="badge pull-right" style="background-color: #FE980F">(@item.Id)</span>
+                    </a>
+                </li>
+            }
+
+            <div id="moreBrands" style="display: none;" class="nav nav-pills nav-stacked">
+                <!-- Ẩn các thương hiệu còn lại -->
+                @foreach (var item in Model.Skip(5))
+                {
+                    <li>
+                        <a asp-action="Index" asp-controller="Brand" asp-route-Slug="@item.Slug">
+                            @item.Name
+                            <span class="badge pull-right" style="background-color: #FE980F">(@item.Id)</span>
+                        </a>
+                    </li>
+                }
+            </div>
+        </ul>
+
+        <!-- Nút "Xem thêm" với cùng màu sắc và chiều rộng -->
+    <button id="toggleBrandsBtn" class="btn btn-primary" style="width: 100%; margin-top: 10px; border-radius: 10px;">
+            Xem thêm
+        </button>
+    </div>
+</div>
+
+
+
+@* @model IEnumerable<BrandModel>
+
+<div class="brands-name">
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#brandMenu" aria-expanded="false" aria-controls="brandMenu">
+        Danh sách thương hiệu <span class="badge" style="background-color: #FE980F">(@Model.Count())</span>
+    </button>
+
+    <div class="collapse in" id="brandMenu"> <!-- 'in' class để mặc định mở khi collapse -->
+        <ul class="nav nav-pills nav-stacked">
+            <!-- Hiển thị 5 thương hiệu đầu tiên -->
+            @foreach (var item in Model.Take(5))
+            {
+                <li>
+                    <a asp-action="Index" asp-controller="Brand" asp-route-Slug="@item.Slug">
+                        @item.Name
+                        <span class="badge pull-right" style="background-color: #FE980F">(@item.Id)</span>
+                    </a>
+                </li>
+            }
+
+            <div id="moreBrands" style="display: none;"> <!-- Ẩn các thương hiệu còn lại -->
+                @foreach (var item in Model.Skip(5))
+                {
+                    <li>
+                        <a asp-action="Index" asp-controller="Brand" asp-route-Slug="@item.Slug">
+                            @item.Name
+                            <span class="badge pull-right" style="background-color: #FE980F">(@item.Id)</span>
+                        </a>
+                    </li>
+                }
+            </div>
+        </ul>
+
+        <!-- Nút thu gọn/mở rộng với biểu tượng mũi tên -->
+        <button id="toggleBrandsBtn" class="btn btn-link">
+            <i class="glyphicon glyphicon-chevron-down"></i> <!-- Biểu tượng mũi tên -->
+        </button>
+    </div>
+</div>
+
+<!-- Script để điều khiển việc ẩn/hiện với hiệu ứng nút thu gọn -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#toggleBrandsBtn').click(function () {
+            $('#moreBrands').slideToggle(); // Hiển thị/ẩn các thương hiệu còn lại
+
+            // Thay đổi biểu tượng mũi tên dựa trên trạng thái hiển thị
+            $(this).find('i').toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+        });
+    });
+</script>
+
+ *@
+
+
+
+@* @model IEnumerable<BrandModel>
+
+<div class="brands-name">
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#brandMenu" aria-expanded="false" aria-controls="brandMenu">
+        Danh sách thương hiệu <span class="badge bg-warning text-dark">(@Model.Count())</span>
+    </button>
+
+    <div class="collapse" id="brandMenu">
+        <ul class="nav nav-pills nav-stacked">
+            @foreach (var item in Model)
+            {
+                <li>
+                    <a asp-action="Index" asp-controller="Brand" asp-route-Slug="@item.Slug">
+                        @item.Name
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+ *@

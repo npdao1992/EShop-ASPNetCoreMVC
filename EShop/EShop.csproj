@@ -27,4 +27,11 @@
     <Folder Include="wwwroot\media\products\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\css\bootstrap - Copy.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

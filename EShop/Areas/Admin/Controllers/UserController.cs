@@ -24,69 +24,87 @@ namespace EShop.Areas.Admin.Controllers
 			_dataContext = context;
 		}
 
-		//[HttpGet]
-		//[Route("Index")]
-		//public async Task<IActionResult> Index()
-		//{
-		//	var usersWithRoles = await (from u in _dataContext.Users
-		//								join ur in _dataContext.UserRoles on u.Id equals ur.UserId
-		//								join r in _dataContext.Roles on ur.RoleId equals r.Id
-		//								select new { User = u, RoleName = r.Name })
-		//								.ToListAsync();
-		//	//return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
-		//	return View(usersWithRoles);
-		//}	
-		
 		[HttpGet]
 		[Route("Index")]
-		public async Task<IActionResult> Index(int pg = 1)
+		public async Task<IActionResult> Index()
 		{
 			// Lấy ra danh sách các user được thêm role (Nếu không có role sẽ không được hiển thị ra)
-			//List<UserWithRoleModel> usersWithRoles = (from u in _dataContext.Users
-			//										  join ur in _dataContext.UserRoles on u.Id equals ur.UserId
-			//										  join r in _dataContext.Roles on ur.RoleId equals r.Id
-			//										  select new UserWithRoleModel
-			//										  {
-			//											  User = u,
-			//											  RoleName = r.Name
-			//										  })
-			//							  .OrderBy(u => u.User.UserName).ToList();
-			// Lấy ra tất cả user ( Kể cả không có Role)
+			//var usersWithRoles = await (from u in _dataContext.Users
+			//							join ur in _dataContext.UserRoles on u.Id equals ur.UserId
+			//							join r in _dataContext.Roles on ur.RoleId equals r.Id
+			//							select new { User = u, RoleName = r.Name })
+			//							.ToListAsync();
+
+
+			//Lấy ra tất cả user(Kể cả không có Role)
 			var usersWithRoles = (from u in _dataContext.Users
-								  join ur in _dataContext.UserRoles on u.Id equals ur.UserId into userRoles
-								  from ur in userRoles.DefaultIfEmpty()
-								  join r in _dataContext.Roles on ur.RoleId equals r.Id into roles
-								  from r in roles.DefaultIfEmpty()
-								  select new UserWithRoleModel
-								  {
-									  User = u,
-									  RoleName = r != null ? r.Name : ""
-								  })
-					  .OrderBy(u => u.User.UserName)
-					  .ToList();
+									  join ur in _dataContext.UserRoles on u.Id equals ur.UserId into userRoles
+									  from ur in userRoles.DefaultIfEmpty()
+									  join r in _dataContext.Roles on ur.RoleId equals r.Id into roles
+									  from r in roles.DefaultIfEmpty()
+									  select new UserWithRoleModel
+									  {
+										  User = u,
+										  RoleName = r != null ? r.Name : ""
+									  })
+						  .OrderBy(u => u.User.UserName)
+						  .ToList();
 
 
-			const int pageSize = 10;
-
-			if (pg < 1)
-			{
-				pg = 1;
-			}
-			int recsCount = usersWithRoles.Count();
-
-			var pager = new Paginate(recsCount, pg, pageSize);
-
-			int recSkip = (pg - 1) * pageSize;
-
-			var data = usersWithRoles.Skip(recSkip).Take(pager.PageSize).ToList();
-
-			// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
-			var model = new Tuple<IEnumerable<UserWithRoleModel>, int>(data, recsCount);
-
-			ViewBag.Pager = pager;
-
-			return View(model);
+			//return View(await _userManager.Users.OrderByDescending(p => p.Id).ToListAsync());
+			return View(usersWithRoles);
 		}
+
+		//[HttpGet]
+		//[Route("Index")]
+		//public async Task<IActionResult> Index(int pg = 1)
+		//{
+		//	// Lấy ra danh sách các user được thêm role (Nếu không có role sẽ không được hiển thị ra)
+		//	//List<UserWithRoleModel> usersWithRoles = (from u in _dataContext.Users
+		//	//										  join ur in _dataContext.UserRoles on u.Id equals ur.UserId
+		//	//										  join r in _dataContext.Roles on ur.RoleId equals r.Id
+		//	//										  select new UserWithRoleModel
+		//	//										  {
+		//	//											  User = u,
+		//	//											  RoleName = r.Name
+		//	//										  })
+		//	//							  .OrderBy(u => u.User.UserName).ToList();
+		//	// Lấy ra tất cả user ( Kể cả không có Role)
+		//	var usersWithRoles = (from u in _dataContext.Users
+		//						  join ur in _dataContext.UserRoles on u.Id equals ur.UserId into userRoles
+		//						  from ur in userRoles.DefaultIfEmpty()
+		//						  join r in _dataContext.Roles on ur.RoleId equals r.Id into roles
+		//						  from r in roles.DefaultIfEmpty()
+		//						  select new UserWithRoleModel
+		//						  {
+		//							  User = u,
+		//							  RoleName = r != null ? r.Name : ""
+		//						  })
+		//			  .OrderBy(u => u.User.UserName)
+		//			  .ToList();
+
+
+		//	const int pageSize = 10;
+
+		//	if (pg < 1)
+		//	{
+		//		pg = 1;
+		//	}
+		//	int recsCount = usersWithRoles.Count();
+
+		//	var pager = new Paginate(recsCount, pg, pageSize);
+
+		//	int recSkip = (pg - 1) * pageSize;
+
+		//	var data = usersWithRoles.Skip(recSkip).Take(pager.PageSize).ToList();
+
+		//	// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
+		//	var model = new Tuple<IEnumerable<UserWithRoleModel>, int>(data, recsCount);
+
+		//	ViewBag.Pager = pager;
+
+		//	return View(model);
+		//}
 
 		[HttpGet]
 		[Route("Create")]

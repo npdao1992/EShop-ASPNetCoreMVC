@@ -17,36 +17,39 @@ namespace EShop.Areas.Admin.Controllers
 			_dataContext = context;
 		}
 
-		//public async Task<IActionResult> Index()
-		//{
-		//	return View(await _dataContext.Brands.OrderByDescending(p => p.Id).ToListAsync());
-		//}
 		[Route("Index")]
-		public async Task<IActionResult> Index(int pg = 1)
+		public async Task<IActionResult> Index()
 		{
-			List<BrandModel> brand = _dataContext.Brands.OrderBy(p => p.Name).ToList();
-
-			const int pageSize = 10;
-
-			if (pg < 1)
-			{
-				pg = 1;
-			}
-			int recsCount = brand.Count();
-
-			var pager = new Paginate(recsCount, pg, pageSize);
-
-			int recSkip = (pg - 1) * pageSize; 
-
-			var data = brand.Skip(recSkip).Take(pager.PageSize).ToList();
-
-			// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
-			var model = new Tuple<IEnumerable<BrandModel>, int>(data, recsCount);
-
-			ViewBag.Pager = pager;
-
-			return View(model);
+			return View(await _dataContext.Brands.OrderByDescending(p => p.Id).ToListAsync());
 		}
+
+		//[Route("Index")]
+		//public async Task<IActionResult> Index(int pg = 1)
+		//{
+		//	List<BrandModel> brand = _dataContext.Brands.OrderBy(p => p.Name).ToList();
+
+		//	const int pageSize = 10;
+
+		//	if (pg < 1)
+		//	{
+		//		pg = 1;
+		//	}
+		//	int recsCount = brand.Count();
+
+		//	var pager = new Paginate(recsCount, pg, pageSize);
+
+		//	int recSkip = (pg - 1) * pageSize; 
+
+		//	var data = brand.Skip(recSkip).Take(pager.PageSize).ToList();
+
+		//	// Truyền dữ liệu vào view dưới dạng Tuple ( Xử lý việc truyền tổng số được truy vấn)
+		//	var model = new Tuple<IEnumerable<BrandModel>, int>(data, recsCount);
+
+		//	ViewBag.Pager = pager;
+
+		//	return View(model);
+		//}
+
 		[Route("Edit")]
 		public async Task<IActionResult> Edit(int Id)
 		{

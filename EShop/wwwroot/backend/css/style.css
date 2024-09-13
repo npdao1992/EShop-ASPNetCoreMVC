@@ -1,6 +1,6 @@
 ﻿/*table {
     width: 100%;*/ /* Đảm bảo bảng sử dụng hết chiều rộng */
-    /*table-layout: fixed;*/ /* Bố cục bảng cố định để kiểm soát cột */
+/*table-layout: fixed;*/ /* Bố cục bảng cố định để kiểm soát cột */
 /*}*/
 .password-column {
     width: 30%;
@@ -16,4 +16,14 @@
     white-space: nowrap; /* Ngăn không cho xuống dòng */
 }
 
+.tb-center {
+    text-align: center;
+}
 
+.tb-right {
+    text-align: right;
+}
+
+.tb-left {
+    text-align: left;
+}

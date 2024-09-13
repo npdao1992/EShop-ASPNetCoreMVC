@@ -6,7 +6,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<title>@ViewData["title"] - Admin Areas</title>
-	<link href="~/css/bootstrap.min.css" rel="stylesheet">
+	<link href="~/css/bt3/bootstrap.min.css" rel="stylesheet">
 	<link href="~/css/font-awesome.min.css" rel="stylesheet">
 	<link href="~/css/prettyPhoto.css" rel="stylesheet">
 	<link href="~/css/price-range.css" rel="stylesheet">
@@ -112,7 +112,7 @@
 
 
 	<script src="~/js/jquery.js"></script>
-	<script src="~/js/bootstrap.min.js"></script>
+	<script src="~/js/bt3/bootstrap.min.js"></script>
 	<script src="~/js/jquery.scrollUp.min.js"></script>
 	<script src="~/js/price-range.js"></script>
 	<script src="~/js/jquery.prettyPhoto.js"></script>
@@ -133,7 +133,12 @@
 	</script>
 
 	<script>
-		let table = new DataTable('#myTable');
+		let table = new DataTable('#myTable', {
+			// paging: false,
+			// scrollCollapse: true,
+			// scrollY: '50vh'
+		});
+		table.datetime('d MMM yyyy');
 	</script>
 
 
