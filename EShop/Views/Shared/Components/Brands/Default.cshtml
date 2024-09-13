@@ -1,5 +1,12 @@
-﻿@model IEnumerable<BrandModel>
+﻿@model IEnumerable<EShop.Models.ViewModels.BrandViewModel>
 
+
+
+<div style="text-align:center; margin-bottom:20px;">
+    <span type="button" data-toggle="collapse" aria-expanded="false">
+        <span class="badge">(@Model.Count())</span>
+    </span>
+</div>
 <div class="brands-name">
   @*   <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#brandMenu" aria-expanded="false" aria-controls="brandMenu">
         Danh sách thương hiệu <span class="badge" style="background-color: #FE980F">(@Model.Count())</span>
@@ -11,9 +18,9 @@
             @foreach (var item in Model.Take(5))
             {
                 <li>
-                    <a asp-action="Index" asp-controller="Brand" asp-route-Slug="@item.Slug">
-                        @item.Name
-                        <span class="badge pull-right" style="background-color: #FE980F">(@item.Id)</span>
+                    <a asp-action="Index" asp-controller="Brand" asp-route-Slug="@item.Brand.Slug">
+                        @item.Brand.Name
+                        <span class="badge pull-right" style="background-color: #FE980F">(@item.ProductCount)</span>
                     </a>
                 </li>
             }
@@ -23,9 +30,9 @@
                 @foreach (var item in Model.Skip(5))
                 {
                     <li>
-                        <a asp-action="Index" asp-controller="Brand" asp-route-Slug="@item.Slug">
-                            @item.Name
-                            <span class="badge pull-right" style="background-color: #FE980F">(@item.Id)</span>
+                        <a asp-action="Index" asp-controller="Brand" asp-route-Slug="@item.Brand.Slug">
+                            @item.Brand.Name
+                        <span class="badge pull-right" style="background-color: #FE980F">(@item.ProductCount)</span>
                         </a>
                     </li>
                 }

@@ -664,7 +664,8 @@ ul.sub-menu {
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
   font-weight: 700;
-  margin: 0 auto 30px;
+  /*margin: 0 auto 30px;*/
+  margin: 0 auto 20px;
   text-align: center;
   text-transform: uppercase;
   position: relative;

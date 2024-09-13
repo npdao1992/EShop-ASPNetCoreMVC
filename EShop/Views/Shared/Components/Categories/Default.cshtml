@@ -1,11 +1,65 @@
-﻿@model IEnumerable<CategoryModel>
+﻿@model IEnumerable<EShop.Models.ViewModels.CategoryViewModel>
+
+<div style="text-align:center; margin-bottom:20px;">
+    <span type="button" data-toggle="collapse" aria-expanded="false">
+        <span class="badge">(@Model.Count())</span>
+    </span>
+</div>
+<div class="brands-name">
+    <div class="panel-group" id="categoryAccordion">
+        <!-- Danh sách các category với tính năng thu gọn -->
+        <div class="collapse in" id="categoryMenu">
+            <!-- 'in' class để mặc định mở khi collapse -->
+            <!-- Hiển thị 5 category đầu tiên -->
+            @foreach (var item in Model.Take(5))
+            {
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a asp-action="Index" asp-controller="Category" asp-route-Slug="@item.Category.Slug">
+                                @item.Category.Name
+                                <span class="badge pull-right" style="background-color: #FE980F">(@item.ProductCount)</span>
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            }
+
+            <div id="moreCategories" style="display: none;">
+                <!-- Ẩn các category còn lại -->
+                @foreach (var item in Model.Skip(5))
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a asp-action="Index" asp-controller="Category" asp-route-Slug="@item.Category.Slug">
+                                    @item.Category.Name
+                                    <span class="badge pull-right" style="background-color: #FE980F">(@item.ProductCount)</span>
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Nút "Xem thêm" -->
+            <button id="toggleCategoriesBtn" class="btn btn-primary" style="width: 100%; margin-top: 10px; border-radius: 10px;">
+                Xem thêm
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+@* @model IEnumerable<CategoryModel>
 
 <div class="panel-group" id="categoryAccordion">
 
     <!-- Danh sách các category với tính năng thu gọn -->
     <div class="collapse in" id="categoryMenu"> <!-- 'in' class để mặc định mở khi collapse -->
         <!-- Hiển thị 5 category đầu tiên -->
-        @foreach(var item in Model.Take(5)) 
+        @foreach(var item in Model.Take(5))
         {
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -35,7 +89,7 @@
         </button>
     </div>
 </div>
-
+ *@
 
 
 @* @model IEnumerable<CategoryModel>
