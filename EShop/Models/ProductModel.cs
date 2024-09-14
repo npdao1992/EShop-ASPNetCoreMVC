@@ -29,6 +29,7 @@ namespace EShop.Models
 		public string Image { get; set; }
 		public CategoryModel Category { get; set; }
 		public BrandModel Brand { get; set; }
+		public RatingModel Ratings { get; set; }
 
 		[NotMapped]
 		[FileExtension]

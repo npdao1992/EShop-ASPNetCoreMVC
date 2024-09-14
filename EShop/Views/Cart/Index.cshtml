@@ -22,12 +22,12 @@
 			<table class="table table-condensed">
 				<thead>
 					<tr class="cart_menu">
-						<td class="image" width="10%">Item</td>
-						<td class="description" width="30%">Name</td>
-						<td class="price">Price</td>
-						<td class="quantity">Quantity</td>
-						<td class="total">Total</td>
-						<td class="actions text-center">Action</td>
+						<td style="text-align:center" class="image" width="12%">Item</td>
+						<td style="text-align:center" class="description" width="30%">Name</td>
+						<td style="text-align:center" class="price">Price</td>
+						<td style="text-align:center" class="quantity">Quantity</td>
+						<td style="text-align:center" class="total">Total</td>
+						<td style="text-align:center" class="actions text-center">Action</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -36,39 +36,39 @@
 						@foreach (var item in Model.CartItems)
 						{
 							<tr>
-								<td class="cart_product">
-									<a><img src="~/media/products/@item.Image" alt="" style="width: 70px; height: auto;"></a>
+								<td style ="text-align:left" class="cart_product">
+									<a><img src="~/media/products/@item.Image" alt="" style="width: 70px; height: auto;margin-right:50px;"></a>
 								</td>
 								<td class="cart_description">
-									<h4><a href="">@item.ProductName</a></h4>
+									<h4><a>@item.ProductName</a></h4>
 								</td>
-								<td class="cart_price">
+								<td style="text-align:right" class="cart_price">
 									<p>@String.Format("{0:N2}", @item.Price.ToString("#,##0 VNĐ"))</p>
 								</td>
-								<td class="cart_quantity">
+								<td style="text-align:center" class="cart_quantity">
 									<a class="btn btn-default btn-sm" asp-controller="Cart" asp-action="Increase" asp-route-id="@item.ProductId"> + </a>
 									<input class="cart_quantity_input" type="text" name="quantity" value="@item.Quantity" autocomplete="off" size="2">
 									<a class="btn btn-success btn-sm" asp-controller="Cart" asp-action="Decrease" asp-route-id="@item.ProductId"> - </a>
 									@* <a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="Remove" asp-route-id="@item.ProductId"> Remove </a> *@
 								</td>
-								<td class="cart_total">
+								<td style="text-align:right" class="cart_total">
 									<p class="cart_total_price">@String.Format("{0:N2}", @Model.CartItems.Where(x => x.ProductId == item.ProductId).Sum(x => x.Quantity * x.Price).ToString("#,##0 VNĐ"))</p>
 								</td>
-								<td class="cart_delete text-center">
+								<td style="text-align:center" class="cart_delete text-center">
 									<a class="cart_quantity_delete" asp-controller="Cart" asp-action="Remove" asp-route-id="@item.ProductId"><i class="fa fa-times"></i></a>
 								</td>
 							</tr>
 						}
 						<tr>
-							<td colspan="4" class="text-center fw-bold">
+							<td style="text-align:center" colspan="4" class="text-center fw-bold">
 								<h4 style="font-style: italic; color: #6c757d; font-size: 2rem;">Grand Total :</h4>
 							</td>
 
-							<td class="align-middle">
+							<td style ="text-align:right" class="align-middle">
 								<p class="cart_total_price">@String.Format("{0:N2}", @Model.GrandTotal.ToString("#,##0 VNĐ"))</p>
 							</td>
 
-							<td class="align-middle text-center">
+							<td style="text-align:center" class="align-middle text-center">
 								<a class="btn btn-warning btn-sm" asp-controller="Cart" asp-action="Clear">Clear</a>
 
 								@if (User.Identity?.IsAuthenticated ?? false)
