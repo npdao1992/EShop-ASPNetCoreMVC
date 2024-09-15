@@ -18,8 +18,12 @@ namespace EShop.Controllers
 
 		public IActionResult Index()
 		{
-			var product = _dataContext.Products.Include("Category").Include("Brand").ToList();
-			return View(product);
+			var products = _dataContext.Products.Include("Category").Include("Brand").ToList();
+			var sliders = _dataContext.Sliders.Where(s => s.Status == 1).ToList();
+
+			// Thêm Slider hiển thị cần gọi partial slider
+			ViewBag.Sliders = sliders;
+			return View(products);
 		}
 
 		public IActionResult Privacy()

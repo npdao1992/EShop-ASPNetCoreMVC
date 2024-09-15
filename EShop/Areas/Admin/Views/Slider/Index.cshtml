@@ -1,0 +1,64 @@
+﻿@model IEnumerable<SliderModel>
+@{
+	ViewData["title"] = "Slider Listed";
+	var stt = 1;
+}
+<h3>List Slider (<span style="color: orangered"> @Model.Count() </span>)</h3>
+
+<a class="btn btn-primary" asp-action="Create" asp-controller="Slider">Add Slider</a>
+
+<table class="table" id="myTable">
+	<thead>
+		<tr>
+			<th style="text-align:center">No</th>
+			<th style="text-align:center">Slider Id</th>
+			<th style="text-align:center">Slider Name</th>
+			<th style="text-align:center">Slider Description</th>
+			<th style="text-align:center">Image</th>
+			<th style="text-align:center">Slider Status</th>
+			<th style="text-align:center">Slider Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<th style="text-align:center">@stt</th>
+				<td style="text-align:center">@item.Id</td>
+				<td>@item.Name</td>
+				<td class="description-column" title="@Html.Encode(item.Description)">
+					@if (item.Description.Length > 30)
+					{
+						<p style="text-align:center">
+							@* @(item.Description.Substring(0, 30) + "...") *@
+							@Html.Raw((@item.Description.Substring(0, 30) + "..."))
+						</p>
+					}
+					else
+					{
+						<p style="text-align:center">
+							@* @item.Description *@
+							@Html.Raw(@item.Description)
+						</p>
+					}
+				</td>
+				<td style="text-align:center"><img src="~/media/sliders/@item.Image" width="400px" height="200px" /></td>
+				<td style="text-align:center">
+					@if (@item.Status == 1)
+					{
+						<span class="text text-success">Hiển thị</span>
+					}
+					else
+					{
+						<span class="text text-danger">Ẩn</span>
+					}
+				</td>
+				<td style="text-align:center">
+					<a asp-action="Edit" class="btn btn-warning btn-sm" asp-controller="Slider" asp-route-id="@item.Id">Edit</a>
+					<a asp-action="Delete" class="btn btn-danger btn-sm confirmDeletion" asp-controller="Slider" asp-route-id="@item.Id">Delete</a>
+				</td>
+			</tr>
+			stt++;
+		}
+	</tbody>
+</table>

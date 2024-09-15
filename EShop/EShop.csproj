@@ -24,6 +24,7 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="wwwroot\backend\images\" />
+    <Folder Include="wwwroot\media\sliders\" />
     <Folder Include="wwwroot\media\products\" />
   </ItemGroup>
 

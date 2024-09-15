@@ -1,7 +1,14 @@
 ﻿@model IEnumerable<ProductModel>
+@{
+	ViewData["title"] = "Index";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<partial name="_SliderPartial" />
 <div class="col-sm-3">
-	@Html.Partial("_SidebarPartial")
+	@* @Html.Partial("_SidebarPartial") *@
+	<partial name="_SidebarPartial" />
 </div>
+
 
 <style>
 	.product-image-wrapper {
