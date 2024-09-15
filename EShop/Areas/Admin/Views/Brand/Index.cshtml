@@ -26,14 +26,20 @@
 				<th style="text-align:center">@stt</th>
 				<td style="text-align:center">@item.Id</td>
 				<td>@item.Name</td>
-				<td class="description-column" title="@item.Description">
+				<td class="description-column" title="@Html.Encode(item.Description)">
 					@if (item.Description.Length > 30)
 					{
-						@(@item.Description.Substring(0, 30) + "...")
+						<p style="text-align:center">
+							@* @(item.Description.Substring(0, 30) + "...") *@
+							@Html.Raw((@item.Description.Substring(0, 30) + "..."))
+						</p>
 					}
 					else
 					{
-						@item.Description
+						<p style="text-align:center">
+							@* @item.Description *@
+							@Html.Raw(@item.Description)
+						</p>
 					}
 				</td>
 				<td>@item.Slug</td>
