@@ -1,0 +1,70 @@
+﻿@model IEnumerable<ContactModel>
+@{
+	ViewData["title"] = "Contact Info";
+	var stt = 1;
+}
+<h3>List Contact (<span style="color: orangered"> @Model.Count() </span>)</h3>
+
+<table class="table" id="myTable">
+	<thead>
+		<tr>
+			<th style="text-align:center">No</th>
+		@* 	<th style="text-align:center">Id</th> *@
+			<th style="text-align:center">Name</th>
+			<th style="text-align:center">Description</th>
+			<th style="text-align:center">Map</th>
+			<th style="text-align:center">Email</th>
+			<th style="text-align:center">Logo</th>
+			<th style="text-align:center">Phone</th>
+			<th style="text-align:center" width="20%">Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<th style="text-align:center">@stt</th>
+				@* <td style="text-align:center">@item.Id</td> *@
+				<td>@item.Name</td>
+				<td class="description-column" title="@Html.Encode(item.Description)">
+					@if (item.Description.Length > 30)
+					{
+						<p style="text-align:center">
+							@* @(item.Description.Substring(0, 30) + "...") *@
+							@Html.Raw((@item.Description.Substring(0, 30) + "..."))
+						</p>
+					}
+					else
+					{
+						<p style="text-align:center">
+							@* @item.Description *@
+							@Html.Raw(@item.Description)
+						</p>
+					}
+				</td>
+				@* <td class="description-column" title="@Html.Encode(item.Map)">
+					@if (item.Map.Length > 30)
+					{
+						<p style="text-align:center">
+							@Html.Raw((@item.Map.Substring(0, 30) + "..."))
+						</p>
+					}
+					else
+					{
+						<p style="text-align:center">
+							@Html.Raw(@item.Map)
+						</p>
+					}
+				</td> *@
+				<td>@Html.Raw(@item.Map)</td>
+				<td>@item.Email</td>
+				<td style="text-align:center"><img src="~/media/logo/@item.LogoImg" width="120px" /></td>
+				<td>@item.Phone</td>
+				<td style="text-align:center">
+					<a asp-action="Edit" class="btn btn-warning btn-sm" asp-controller="Contact">Edit</a>
+				</td>
+			</tr>
+			stt++;
+		}
+	</tbody>
+</table>
