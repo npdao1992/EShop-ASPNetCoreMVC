@@ -19,10 +19,13 @@ namespace EShop.Controllers
 		public IActionResult Index()
 		{
 			var products = _dataContext.Products.Include("Category").Include("Brand").ToList();
-			var sliders = _dataContext.Sliders.Where(s => s.Status == 1).ToList();
 
 			// Thêm Slider hiển thị cần gọi partial slider
+			var sliders = _dataContext.Sliders.Where(s => s.Status == 1).ToList();
+
 			ViewBag.Sliders = sliders;
+			// End Slider
+
 			return View(products);
 		}
 
