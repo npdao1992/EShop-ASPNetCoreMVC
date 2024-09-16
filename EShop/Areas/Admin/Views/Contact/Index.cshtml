@@ -3,29 +3,32 @@
 	ViewData["title"] = "Contact Info";
 	var stt = 1;
 }
-<h3>List Contact (<span style="color: orangered"> @Model.Count() </span>)</h3>
+<h3>Infomation</h3>
 
-<table class="table" id="myTable">
+<table class="table">
 	<thead>
 		<tr>
-			<th style="text-align:center">No</th>
+			@* <th style="text-align:center">No</th> *@
 		@* 	<th style="text-align:center">Id</th> *@
 			<th style="text-align:center">Name</th>
+			<th style="text-align:center">ShopName</th>
 			<th style="text-align:center">Description</th>
 			<th style="text-align:center">Map</th>
 			<th style="text-align:center">Email</th>
 			<th style="text-align:center">Logo</th>
+			<th style="text-align:center">Logo mini</th>
 			<th style="text-align:center">Phone</th>
-			<th style="text-align:center" width="20%">Action</th>
+			<th style="text-align:center">Action</th>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach (var item in Model)
 		{
 			<tr>
-				<th style="text-align:center">@stt</th>
+				@* <th style="text-align:center">@stt</th> *@
 				@* <td style="text-align:center">@item.Id</td> *@
 				<td>@item.Name</td>
+				<td>@item.ShopName</td>
 				<td class="description-column" title="@Html.Encode(item.Description)">
 					@if (item.Description.Length > 30)
 					{
@@ -59,9 +62,10 @@
 				<td>@Html.Raw(@item.Map)</td>
 				<td>@item.Email</td>
 				<td style="text-align:center"><img src="~/media/logo/@item.LogoImg" width="120px" /></td>
+				<td style="text-align:center"><img src="~/media/logo/@item.LogominiImg" width="100%" height="100%"/></td>
 				<td>@item.Phone</td>
 				<td style="text-align:center">
-					<a asp-action="Edit" class="btn btn-warning btn-sm" asp-controller="Contact">Edit</a>
+					<a asp-action="Edit" class="btn btn-warning btn-sm" asp-controller="Contact" asp-route-id="@item.Id">Edit</a>
 				</td>
 			</tr>
 			stt++;

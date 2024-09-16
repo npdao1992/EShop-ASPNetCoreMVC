@@ -9,12 +9,17 @@
 
 	<form asp-action="Edit" asp-controller="Contact" method="post" enctype="multipart/form-data">
 		@* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
-		@* <input type="hidden" asp-for="Id" /> *@
+		<input type="hidden" asp-for="Id" />
 		<div class="form-group">
 			<label>Name</label>
 			<input asp-for="Name" class="form-control" />
 			<span asp-validation-for="Name" class="text-danger" />
-		</div>		
+		</div>
+		<div class="form-group">
+			<label>ShopName</label>
+			<input asp-for="ShopName" class="form-control" />
+			<span asp-validation-for="ShopName" class="text-danger" />
+		</div>
 		<div class="form-group">
 			<label>Email</label>
 			<input asp-for="Email" required class="form-control" />
@@ -37,11 +42,18 @@
 		</div>
 
 		<div class="form-group">
-			<label>Image</label>
+			<label>Logo</label>
 			<input asp-for="ImageUpload" class="form-control" />
 			<span asp-validation-for="ImageUpload" class="text-danger" />
 			<img id="currentImage" src="~/media/logo/@Model.LogoImg" width="200px" height="200px" />
 			<img id="imgpreview" class="pt-2" style="display: none;" />
+		</div>
+		<div class="form-group">
+			<label>Logo mini</label>
+			<input asp-for="ImageminiUpload" class="form-control" />
+			<span asp-validation-for="ImageminiUpload" class="text-danger" />
+			<img id="currentImage_mini" src="~/media/logo/@Model.LogominiImg" width="140px" height="40px" />
+			<img id="imgpreview_mini" class="pt-2" style="display: none;" />
 		</div>
 
 		<div class="form-group">
@@ -64,6 +76,15 @@
 			readURL(this);
 		})
 	</script>
+
+
+		<script>
+		$("#ImageminiUpload").change(function () {
+			readURL_mini(this);
+		})
+	</script>
+
+
 
 	<script>
 		CKEDITOR.replace('Description');

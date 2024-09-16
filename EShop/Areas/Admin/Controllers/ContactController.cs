@@ -29,9 +29,9 @@ namespace EShop.Areas.Admin.Controllers
         }
 
         [Route("Edit")]
-		public async Task<IActionResult> Edit()
+		public async Task<IActionResult> Edit(int Id)
 		{
-			ContactModel contact = await _dataContext.Contact.FirstOrDefaultAsync();
+			ContactModel contact = await _dataContext.Contact.FindAsync(Id);
 			return View(contact);
 		}
 
@@ -41,7 +41,7 @@ namespace EShop.Areas.Admin.Controllers
 		public async Task<IActionResult> Edit(ContactModel contact)
 		{
 
-			var existed_contact = _dataContext.Contact.FirstOrDefault();
+			var existed_contact = _dataContext.Contact.Find(contact.Id); // tìm liên hệ theo id contact
 
 			// Nếu không tồn tại
 			if (existed_contact == null)
@@ -53,7 +53,7 @@ namespace EShop.Areas.Admin.Controllers
 			if (ModelState.IsValid)
 			{
 
-				// Kiểm tra và upload hình ảnh mới
+				// Kiểm tra và upload hình ảnh mới Logo
 				if (contact.ImageUpload != null)
 				{
 					string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/logo");
@@ -83,8 +83,39 @@ namespace EShop.Areas.Admin.Controllers
 					existed_contact.LogoImg = imageName;
 				}
 
+				// Kiểm tra và upload hình ảnh mới Logo mini
+				if (contact.ImageminiUpload != null)
+				{
+					string mini_uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/logo");
+					string mini_imageName = Guid.NewGuid().ToString() + "_" + contact.ImageminiUpload.FileName;
+					string mini_filePath = Path.Combine(mini_uploadsDir, mini_imageName);
+
+					// Xóa hình ảnh cũ
+					string mini_oldfilePath = Path.Combine(mini_uploadsDir, existed_contact.LogominiImg);
+					try
+					{
+						if (System.IO.File.Exists(mini_oldfilePath))
+						{
+							System.IO.File.Delete(mini_oldfilePath);
+						}
+					}
+					catch (Exception ex)
+					{
+						ModelState.AddModelError("", "An error occurred while deleting the product image.");
+					}
+
+					// Lưu hình ảnh mới
+					using (FileStream fs_mini = new FileStream(mini_filePath, FileMode.Create))
+					{
+						await contact.ImageminiUpload.CopyToAsync(fs_mini);
+					}
+
+					existed_contact.LogominiImg = mini_imageName;
+				}
+
 				// Cập nhật các thuộc tính khác của sản phẩm
 				existed_contact.Name = contact.Name;
+				existed_contact.ShopName = contact.ShopName;
 				existed_contact.Email = contact.Email;
 				existed_contact.Description = contact.Description;
 				existed_contact.Phone = contact.Phone;

@@ -5,7 +5,9 @@
 <div class="row">
 	<div class="col-sm-3" style="text-align:center;">
 		<div class="companyinfo">
-			<h2><span>DNP</span>-shop</h2>
+			@* <h2><span>DNP</span>-shop</h2> *@
+			<h2><span>@Model.ShopName</span>-shop</h2>
+			@* <h2><span>@Model.ShopName</span></h2> *@
 			<p><td style="text-align:center"><img src="~/media/logo/@Model.LogoImg" width="150px" height="120px" /></td></p>
 			<p>@Html.Raw(@Model.Description)</p>
 		</div>
@@ -96,8 +98,8 @@
 <div class="footer-bottom">
 	<div class="container">
 		<div class="row">
-			<p class="pull-left">Copyright © 2024 @Model.Name Inc. All rights reserved.</p>
-			<p class="pull-right">Designed by <span><a target="_blank" href="https://github.com/npdao1992">DNP</a></span></p>
+			<p class="pull-left">Copyright © 2024 @Model.ShopName Inc. All rights reserved.</p>
+			<p class="pull-right">Designed by <span><a target="_blank" href="https://github.com/npdao1992">@Model.Name</a></span></p>
 		</div>
 	</div>
 </div>

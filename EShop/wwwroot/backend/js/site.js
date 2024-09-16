@@ -34,6 +34,26 @@ function readURL(input) {
     }
 }
 
+function readURL_mini(input) {
+    if (input.files && input.files[0]) {
+        let reader = new FileReader();
+
+        // Ẩn hình ảnh hiện tại
+        $("#currentImage_mini").hide();
+
+
+        reader.onload = function (e) {
+            $("img#imgpreview_mini")
+                .attr("src", e.target.result)
+                .width(140)
+                .height(40)
+                .show();  // Hiển thị hình ảnh mới
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
 
 function readURLs(input) {
     if (input.files && input.files[0]) {
