@@ -34,9 +34,10 @@ namespace EShop.Controllers
 			return View();
 		}
 
-		public IActionResult Contact()
+		public async Task<IActionResult> Contact()
 		{
-			return View();
+			var contact = await _dataContext.Contact.FirstOrDefaultAsync();
+			return View(contact);
 		}
 
 
