@@ -50,10 +50,11 @@
 	<div id="fb-root"></div>
 	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v20.0" nonce="yOpFfkjR"></script>
 
-	@* <script src="~/js/jquery.js"></script> *@
+	<script src="~/js/jquery.js"></script>
 
-	<!-- Start Script để điều khiển việc ẩn/hiện với hiệu ứng nút "Xem thêm" -->
-	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+@* 	<!-- Start Script để điều khiển việc ẩn/hiện với hiệu ứng nút "Xem thêm" -->
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script> *@
+
 	<script src="~/js/site-brand.js"></script>
 	<script src="~/js/site-category.js"></script>
 
@@ -66,6 +67,9 @@
 	<script src="~/js/jquery.prettyPhoto.js"></script>
 	<script src="~/js/main.js"></script>
 
+	<!-- Hiển hị thông báo-->
+	<script src="~/backend/js/site.js"></script>
+
 	<!-- Thông báo Sweet Alert-->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>
 	<script>
@@ -75,9 +79,6 @@
 				Swal.fire(message);
 		});
 	</script>
-
-
-
 
 	@await RenderSectionAsync("Scripts", required: false)
 
