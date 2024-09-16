@@ -7,6 +7,29 @@
 		width: 100%;
 		max-height: 400px !important;
 	}
+
+	.carousel-control {
+		width: 5%; /* Điều chỉnh kích thước nút điều hướng */
+		height: 100%; /* Chiều cao của nút điều hướng bằng chiều cao của carousel */
+		color: #fff; /* Màu chữ của nút điều hướng */
+		background: transparent !important; /* Nền trong suốt với ưu tiên cao */
+		display: flex; /* Sử dụng flexbox để căn chỉnh nội dung */
+		justify-content: center; /* Canh giữa nội dung theo chiều ngang */
+		align-items: center; /* Canh giữa nội dung theo chiều dọc */
+		font-size: 2em; /* Kích thước biểu tượng */
+		text-decoration: none; /* Xóa gạch chân */
+	}
+
+
+	.carousel-control.left {
+		left: 0;
+	}
+
+	.carousel-control.right {
+		right: 0;
+	}
+
+
 </style>
 <section id="slider">
 	<!--slider-->
@@ -35,10 +58,10 @@
 
 					</div>
 
-					<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+					<a class="left carousel-control" href="#slider-carousel" data-slide="prev">
 						<i class="fa fa-angle-left"></i>
 					</a>
-					<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+					<a class="right carousel-control" href="#slider-carousel" data-slide="next">
 						<i class="fa fa-angle-right"></i>
 					</a>
 				</div>

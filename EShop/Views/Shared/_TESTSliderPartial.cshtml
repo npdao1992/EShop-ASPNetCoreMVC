@@ -1,0 +1,43 @@
+﻿@{
+    // 1360 x 540 pixel
+    var index = 0;
+}
+<style>
+    .carousel-inner {
+        width: 100%;
+        max-height: 400px !important;
+    }
+</style>
+<section id="slider">
+    <!--slider-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="slider-carousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-target="#slider-carousel" data-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-target="#slider-carousel" data-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-target="#slider-carousel" data-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+
+                    <div class="carousel-inner">
+                        @foreach (var slider in ViewBag.Sliders)
+                        {
+                            <div class="item @(index == 0 ? "active" : "")">
+                                <img src="~/media/sliders/@slider.Image" class="d-block w-100" alt="Slide Image" />
+                            </div>
+                            index++;
+                        }
+                    </div>
+
+                    <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section><!--/slider-->
