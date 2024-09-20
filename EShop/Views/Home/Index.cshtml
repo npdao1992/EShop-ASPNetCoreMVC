@@ -12,8 +12,9 @@
 
 <style>
 	.product-image-wrapper {
-		height: 450px;
+		height: 410px;
 	}
+
 </style>
 
 <div class="col-sm-9 padding-right">
@@ -41,12 +42,12 @@
 					<div class="choose">
 						@if (User.Identity?.IsAuthenticated ?? false)
 						{
-							<ul class="nav nav-pills nav-justified">
+							<ul class="nav nav-pills nav-justified" style="text-align:center;">
 								<li>
-									<button class="btn btn-danger add-btn-wishlist" data-product_id="@item.Id">Yêu thích</button>
+									<button class="btn btn-wishlist" data-product_id="@item.Id">Yêu thích</button>
 								</li>
 								<li>
-									<button class="btn btn-primary add-btn-compare" data-product_id="@item.Id">So sánh</button>
+									<button class="btn btn-compare" data-product_id="@item.Id">So sánh</button>
 								</li>
 							</ul>
 						}
@@ -92,7 +93,84 @@
 	<!-- Start Add to Wishlist Script-->
 	<script>
 		$(document).ready(function () {
-			$('.add-btn-wishlist').click(function () {
+			$('.btn-wishlist').click(function () {
+				var Id = $(this).data("product_id");
+
+				// // Lấy CSRF token nếu cần
+				// var token = $('input[name="__RequestVerificationToken"]').val();
+
+				$.ajax({
+					type: "POST",
+					url: "@Url.Action("AddWishlist", "Home")",
+					data: {
+						Id: Id, // Gửi Id sản phẩm
+						// __RequestVerificationToken: token // Thêm CSRF token nếu cần
+					},
+					success: function (result) {
+						// Xử lý phản hồi thành công
+						if (result.success) {
+							Swal.fire("Thêm yêu thích sản phẩm thành công.");
+						} else {
+							// Hiển thị thông báo nếu sản phẩm đã có trong danh sách yêu thích
+							Swal.fire(result.message);
+							// Điều hướng về trang chủ nếu cần
+							if (result.message.includes("already exists")) {
+								Swal.fire("Sản phẩm đã tồn tại trong Wishlist.");
+								// window.location.href = '@Url.Action("Index", "Home")';
+							}
+						}
+					},
+					error: function (xhr, status, error) {
+						// Xử lý lỗi nếu có
+						Swal.fire("Có lỗi xảy ra: " + error);
+					}
+				});
+			});
+		});
+	</script>
+
+	<!-- End Add to Wishlist Script-->
+
+	<!-- Start Add to Compare Script-->
+	<script>
+		$(document).ready(function () {
+			$('.btn-compare').click(function () {
+				var Id = $(this).data("product_id");
+
+				// alert(product_id);
+				$.ajax({
+					type: "POST",
+					url: "@Url.Action("AddCompare", "Home")",
+					data: { Id: Id }, // Send data to server
+					success: function (result) {
+						// Xử lý phản hồi thành công
+						if (result.success) {
+							Swal.fire("Thêm so sánh sản phẩm thành công.");
+						} else {
+							// Hiển thị thông báo nếu sản phẩm đã có trong danh sách so sánh
+							Swal.fire(result.message);
+							// Điều hướng về trang chủ nếu cần
+							if (result.message.includes("already exists")) {
+								Swal.fire("Sản phẩm đã tồn tại trong Compare.");
+								// window.location.href = '@Url.Action("Index", "Home")';
+							}
+						}
+					},
+					error: function (xhr, status, error) {
+						// Xử lý lỗi nếu có
+						Swal.fire("Có lỗi xảy ra: " + error);
+					}
+				});
+			});
+		});
+	</script>
+	<!-- End Add to Compare Script-->
+}
+@*
+	<!-- Start Add to Wishlist Script-->
+	<script>
+		$(document).ready(function () {
+			$('.btn-wishlist').click(function () {
 				var Id = $(this).data("product_id");
 
 				// alert(product_id);
@@ -118,12 +196,13 @@
 			});
 		});
 	</script>
-	<!-- End Add to Wishlist Script-->
+	<!-- End Add to Wishlist Script--> *@
 
-	<!-- Start Add to Compare Script-->
+
+@* <!-- Start Add to Compare Script-->
 	<script>
 		$(document).ready(function () {
-			$('.add-btn-compare').click(function () {
+			$('.btn-compare').click(function () {
 				var Id = $(this).data("product_id");
 
 				// alert(product_id);
@@ -149,6 +228,4 @@
 			});
 		});
 	</script>
-	<!-- End Add to Compare Script-->
-
-}
+	<!-- End Add to Compare Script--> *@

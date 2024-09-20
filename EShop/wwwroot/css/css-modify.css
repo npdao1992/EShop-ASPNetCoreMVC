@@ -1,0 +1,59 @@
+﻿
+ /* Start CSS Cho 2 nút Wishlist và Compare*/
+.btn-wishlist {
+   /* background-color: #f8c6c6;*/ /* Màu nền cho Wishlist */
+   /* color: #c72c2c; *//* Màu chữ cho Wishlist */
+    background-color: #F5F5ED; /* Màu nền cho nút */
+    color: #696763; /* Màu chữ */
+    border: 0px solid #c72c2c; /* Màu viền cho Wishlist */
+    margin: 10px 10px 10px 30px;
+}
+
+    .btn-wishlist:hover {
+        background-color: #f5b3b3; /* Màu nền khi hover cho Wishlist */
+        color: #a62b2b; /* Màu chữ khi hover cho Wishlist */
+    }
+
+.btn-compare {
+    /*background-color: #d0e8ff;*/ /* Màu nền cho Compare */
+    /*color: #007bff;*/ /* Màu chữ cho Compare */
+    background-color: #F5F5ED; /* Màu nền cho nút */
+    color: #696763; /* Màu chữ */
+    border: 0px solid #007bff; /* Màu viền cho Compare */
+    margin: 10px 30px 10px 10px;
+}
+
+    .btn-compare:hover {
+        background-color: #a1c3f6; /* Màu nền khi hover cho Compare */
+        color: #0056b3; /* Màu chữ khi hover cho Compare */
+    }
+
+/* End CSS Cho 2 nút Wishlist và Compare*/
+
+
+/* CSS cho nút Thêm vào giỏ hàng */
+.btn.add-to-cart {
+    background-color: #F5F5ED; /* Màu nền cho nút */
+    color: #696763; /* Màu chữ */
+    border: none; /* Bỏ viền mặc định */
+    padding: 10px 20px; /* Khoảng cách bên trong nút */
+    border-radius: 20px; /* Bo tròn góc nút */
+    font-size: 16px; /* Kích thước chữ */
+   /* font-weight: bold; *//* Chữ đậm */
+    text-align: center; /* Căn giữa chữ */
+    transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển màu khi hover */
+    display: inline-flex; /* Căn giữa icon và chữ */
+    align-items: center; /* Căn giữa icon và chữ dọc theo trục */
+}
+
+    .btn.add-to-cart i {
+        margin-right: 8px; /* Khoảng cách giữa icon và chữ */
+    }
+
+    .btn.add-to-cart:hover {
+        /* background-color: #218838;*/ /* Màu nền khi hover */
+        background-color: #FE980F; /* Màu nền khi hover */
+        color: #e6e6e6; /* Màu chữ khi hover */
+    }
+
+/* End CSS cho nút Thêm vào giỏ hàng */
