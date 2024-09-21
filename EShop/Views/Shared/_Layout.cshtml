@@ -34,7 +34,7 @@
 </head><!--/head-->
 
 <body>
-	
+
 	<partial name="_HeaderPartial" />
 
 	<section>
@@ -52,10 +52,22 @@
 	<div id="fb-root"></div>
 	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v20.0" nonce="yOpFfkjR"></script>
 
-	<script src="~/js/jquery.js"></script>
+	@* <script src="~/js/jquery.js"></script> *@
 
-@* 	<!-- Start Script để điều khiển việc ẩn/hiện với hiệu ứng nút "Xem thêm" -->
+	@* 	<!-- Start Script để điều khiển việc ẩn/hiện với hiệu ứng nút "Xem thêm" -->
 	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script> *@
+	<script>
+		var addToCartUrl = '@Url.Action("Add", "Cart")';
+		var addToComparetUrl = '@Url.Action("AddCompare", "Home")';
+		var addToWishlistUrl = '@Url.Action("AddWishlist", "Home")';
+	</script>
+
+	<!-- Đảm bảo jQuery được tải trước -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<!-- Sau đó nạp file ajax.js -->
+	<!-- Ajax Cart, Wishlist, Compare-->
+	<script src="~/js/ajax/ajax.js"></script>
 
 	<script src="~/js/site-brand.js"></script>
 	<script src="~/js/site-category.js"></script>
@@ -71,6 +83,7 @@
 
 	<!-- Hiển hị thông báo-->
 	<script src="~/backend/js/site.js"></script>
+
 
 	<!-- Thông báo Sweet Alert-->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.0/dist/sweetalert2.all.min.js"></script>

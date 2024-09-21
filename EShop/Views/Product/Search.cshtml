@@ -9,36 +9,45 @@
 </div>
 <style>
 	.product-image-wrapper {
-		height: auto;
+		height: 410px;
 	}
+
 </style>
+
 <div class="col-sm-9 padding-right">
 	<div class="features_items">
 		<!--features_items-->
-		<h2 class="title text-center">@ViewBag.Keyword</h2>
+		<h2 class="title text-center">Features Items</h2>
 		@foreach (var item in Model)
 		{
 			<div class="col-sm-4">
 				<div class="product-image-wrapper">
-
-					<a asp-action="Details" asp-controller="Product" asp-route-id="@item.Id">
-						<div class="single-products">
-							<div class="productinfo text-center">
-								<img src="~/media/products/@item.Image" alt="@item.Name" width="100%" />
-								<h2>$@item.Price</h2>
+					<div class="single-products">
+						<div class="productinfo text-center">
+							<a asp-action="Detail" asp-controller="Product" asp-route-id="@item.Id">
+								<img src="~/media/products/@item.Image" alt="@item.Name" width="100%" height="150px" />
+								<h2>@String.Format("{0:N2}", @item.Price.ToString("#,##0 VNĐ"))</h2>
 								<p>@item.Name</p>
 								<p>Danh mục : @item.Category.Name</p>
 								<p>Thương hiệu : @item.Brand.Name</p>
-								<a class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-id="@item.Id"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-							</div>
+							</a>
+							@* <a class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-id="@item.Id"><i class="fa fa-shopping-cart"></i>Add to cart</a> *@
+							<button class="btn btn-default add-to-cart" data-product_id="@item.Id"><i class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
 						</div>
+					</div>
 
-					</a>
 					<div class="choose">
-						<ul class="nav nav-pills nav-justified">
-							<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-							<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-						</ul>
+						@if (User.Identity?.IsAuthenticated ?? false)
+						{
+							<ul class="nav nav-pills nav-justified" style="text-align:center;">
+								<li>
+									<button class="btn btn-wishlist" data-product_id="@item.Id">Yêu thích</button>
+								</li>
+								<li>
+									<button class="btn btn-compare" data-product_id="@item.Id">So sánh</button>
+								</li>
+							</ul>
+						}
 					</div>
 				</div>
 			</div>
