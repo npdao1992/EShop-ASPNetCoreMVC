@@ -30,6 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Product\Detail - 3 Product.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="Views\Shared\_SliderPartial.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
