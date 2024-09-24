@@ -31,7 +31,11 @@ namespace EShop.Models
 		public BrandModel Brand { get; set; }
 		public RatingModel Ratings { get; set; }
 
-		[NotMapped]
+
+        // Danh sách hình ảnh
+        public virtual ICollection<ProductImageModel> Images { get; set; } = new List<ProductImageModel>();
+
+        [NotMapped]
 		[FileExtension]
 		public IFormFile? ImageUpload { get; set; }
 	}

@@ -26,7 +26,7 @@
 		@foreach (var item in Model)
 		{
 			<tr>
-				<th style="text-align:center">@stt</th>
+				<td style="text-align:center">@stt</td>
 				<td style="text-align:center">@item.Id</td>
 				<td>@item.Name</td>
 				<td class="description-column" title="@Html.Encode(item.Description)">
@@ -45,12 +45,17 @@
 						</p>
 					}
 				</td>
-				<td style="text-align:center"><img src="~/media/products/@item.Image" width="120px" /></td>
+				@* <td style="text-align:center"><img src="~/media/products/@item.Image" width="120px" /></td> *@
+				<td style="text-align:center">
+					<img src="@(item.Image == "noname.png" ? Url.Content("~/media/default/noname.png") : Url.Content("~/media/products/" + item.Image))" width="120px" />
+				</td>
+
 				<td>@item.Slug</td>
 				<td style ="text-align:right">@String.Format("{0:N2}", item.Price.ToString("#,##0 VNĐ"))</td>
 				<td>@item.Category.Name</td>
 				<td>@item.Brand.Name</td>
 				<td style="text-align:center">
+					<a asp-action="Index" class="btn btn-success btn-sm" asp-controller="ProductImage" asp-route-id="@item.Id">Add Images</a>
 					<a asp-action="Edit" class="btn btn-warning btn-sm" asp-controller="Product" asp-route-id="@item.Id">Edit</a>
 					<a asp-action="Delete" class="btn btn-danger btn-sm confirmDeletion" asp-controller="Product" asp-route-id="@item.Id">Delete</a>
 				</td>

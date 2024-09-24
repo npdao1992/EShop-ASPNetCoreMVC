@@ -1,0 +1,72 @@
+﻿@model IEnumerable<ProductImageModel>
+
+@{
+	ViewData["title"] = "ProductImage Listed";
+	var stt = 1;
+}
+
+<div>
+	<h3>Product Detail (<span style="color: orangered"> @Model.Count() </span>)</h3>
+
+</div>
+
+<div class="col-md-12">
+
+		<div style="font-size: 16px; font-weight:bold; margin-top:20px;">
+			Sản phẩm:
+			&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+		<span style="color: chocolate">@ViewBag.ProductName</span>
+			<br />
+			Hình ảnh gốc:
+			@* <img src="~/media/products/@item.Product.Image" width="150px" height="150px" /> *@
+		<img src="@(ViewBag.ProductImage == "noname.png" ? Url.Content("~/media/default/noname.png") : Url.Content("~/media/products/" + ViewBag.ProductImage))" width="150px" height="150px" />
+			<br />
+		</div>
+
+	<div style="font-size: 16px; font-weight:bold; margin-top:20px;">
+		Hình ảnh chi tiết:
+		<br />
+		<a asp-area="Admin" asp-controller="ProductImage" asp-action="Create" asp-route-productId="@ViewBag.ProductId" class="btn btn-primary">Thêm Hình Ảnh</a>
+	</div>
+
+	<table class="table" id="detail_product">
+		<thead>
+			<tr>
+				<th style="text-align:center">No</th>
+				<th style="text-align:center">ID</th>
+				<th style="text-align:center">ImageUrl</th>
+				<th style="text-align:center">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var image in Model)
+			{
+				<tr>
+					<td style="text-align:center">@stt</td>
+					<td style="text-align:center">@image.Id</td>
+					<td style="text-align:center"><img src="~/media/product-details/@image.ImageUrl" style="width: 100px; height: 100px;" /></td>
+					<td style="text-align:center">
+						@* <a asp-area="Admin" asp-controller="ProductImage" asp-action="Edit" asp-route-id="@image.Id" class="btn btn-warning">Sửa</a> *@
+						<a asp-area="Admin" asp-controller="ProductImage" asp-action="Delete" asp-route-id="@image.Id" class="btn btn-danger">Xóa</a>
+					</td>
+				</tr>
+				stt++;
+			}
+		</tbody>
+	</table>
+
+</div>
+
+<a asp-area="Admin" asp-action="Index" asp-controller="Product" class="back-to-list">Back to Product List</a>
+
+@section Scripts {
+	<script>
+		new DataTable('#detail_product', {
+			layout: {
+				topStart: {
+					buttons: ['pdf', 'print']
+				}
+			}
+		});
+	</script>
+}

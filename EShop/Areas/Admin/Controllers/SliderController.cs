@@ -10,8 +10,8 @@ namespace EShop.Areas.Admin.Controllers
 {
 	[Area("Admin")]
 	[Route("Admin/Slider")]
-	[Authorize(Roles = "Admin")]
-	public class SliderController : Controller
+    [Authorize(Roles = "Admin,Staff")]
+    public class SliderController : Controller
 	{
 
 		private readonly DataContext _dataContext;

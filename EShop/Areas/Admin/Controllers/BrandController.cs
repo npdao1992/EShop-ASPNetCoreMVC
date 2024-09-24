@@ -8,8 +8,8 @@ namespace EShop.Areas.Admin.Controllers
 {
 	[Area("Admin")]
 	[Route("Admin/Brand")]
-	[Authorize(Roles = "Admin,Publisher,Author")]
-	public class BrandController : Controller
+    [Authorize(Roles = "Admin,Staff")]
+    public class BrandController : Controller
 	{
 		private readonly DataContext _dataContext;
 		public BrandController(DataContext context)

@@ -9,8 +9,8 @@ namespace EShop.Areas.Admin.Controllers
 {
 	[Area("Admin")]
 	[Route("Admin/Product")]
-	[Authorize(Roles = "Admin")]
-	public class ProductController : Controller
+    [Authorize(Roles = "Admin,Staff")]
+    public class ProductController : Controller
 	{
 		private readonly DataContext _dataContext;
 		private readonly IWebHostEnvironment _webHostEnvironment;
@@ -71,16 +71,18 @@ namespace EShop.Areas.Admin.Controllers
 
 			if (ModelState.IsValid)
 			{
-				// code them du lieu
+				// Tạo slug cho sản phẩm
 				product.Slug = product.Name.Replace(" ", "-");
 				var slug = await _dataContext.Products.FirstOrDefaultAsync(p => p.Slug == product.Slug);
 
+				// Kiểm tra xem sản phẩm đã có trong cơ sở dữ liệu chưa
 				if (slug != null)
 				{
 					ModelState.AddModelError("", "Sản phẩm đã có trong database");
 					return View(product);
 				}
 
+				// Kiểm tra nếu người dùng tải lên hình ảnh
 				if (product.ImageUpload != null)
 				{
 					string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
@@ -93,9 +95,16 @@ namespace EShop.Areas.Admin.Controllers
 
 					product.Image = imageName;
 				}
+				else
+				{
+					// Nếu không có hình ảnh được tải lên, sử dụng hình ảnh mặc định "noname.png"
+					product.Image = "noname.png";
+				}
 
+				// Lưu sản phẩm vào cơ sở dữ liệu
 				_dataContext.Add(product);
 				await _dataContext.SaveChangesAsync();
+
 				TempData["success"] = "Thêm sản phẩm thành công";
 				return RedirectToAction("Index");
 			}
@@ -330,7 +339,7 @@ namespace EShop.Areas.Admin.Controllers
 
 			_dataContext.Products.Remove(product);
 			await _dataContext.SaveChangesAsync();
-			TempData["error"] = "Sản phẩm đã xoá";
+			TempData["success"] = "Sản phẩm đã xoá thành công";
 			return RedirectToAction("Index");
 		}
 	}

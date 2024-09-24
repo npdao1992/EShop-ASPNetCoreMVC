@@ -43,7 +43,8 @@
 			<label>Image</label>
 			<input asp-for="ImageUpload" class="form-control" />
 			<span asp-validation-for="ImageUpload" class="text-danger" />
-			<img id="currentImage" src="~/media/products/@Model.Image" width="200px" height="200px" />
+			@* <img id="currentImage" src="~/media/products/@Model.Image" width="200px" height="200px" /> *@
+			<img id="currentImage" src="@(Model.Image == "noname.png" ? Url.Content("~/media/default/noname.png") : Url.Content("~/media/products/" + Model.Image))" width="200px" height="200px" />
 			<img id="imgpreview" class="pt-2" style="display: none;" />
 		</div>
 

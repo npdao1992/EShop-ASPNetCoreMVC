@@ -1,0 +1,41 @@
+﻿@model EShop.Models.ProductImageModel
+
+@{
+    ViewData["title"] = "Create ProductImage";
+}
+
+<h4>Create ProductImage</h4>
+<div class="col-md-9">
+
+    <form asp-action="Create" asp-route-productId="@ViewBag.ProductId" enctype="multipart/form-data" method="post">
+        
+        <input type="hidden" asp-for="ProductId" value="@ViewBag.ProductId" />
+
+        <div class="form-group">
+            <label>ProductId: (<span style="color: orangered"> @ViewBag.ProductId </span>)</label>
+        </div>
+         <div class="form-group">
+            <label>Image</label>
+            <input asp-for="ImageUpload" class="form-control" type="file" />
+            <span asp-validation-for="ImageUpload" class="text-danger"></span>
+            <img id="imgpreview" class="pt-2" />
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </form>
+
+    <a asp-area="Admin" asp-action="Index" asp-controller="ProductImage" asp-route-id="@ViewBag.ProductId" class="back-to-list">Back to ProductImage List</a>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<script>
+		$("#ImageUpload").change(function () {
+			readURL(this);
+		})
+	</script>
+}

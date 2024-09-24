@@ -4,6 +4,7 @@ using EShop.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EShop.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240923082212_AddProductImage")]
+    partial class AddProductImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -266,7 +268,7 @@ namespace EShop.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("EShop.Models.ProductImageModel", b =>
+            modelBuilder.Entity("EShop.Models.ProductImage", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -275,7 +277,6 @@ namespace EShop.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("ProductId")
@@ -565,7 +566,7 @@ namespace EShop.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("EShop.Models.ProductImageModel", b =>
+            modelBuilder.Entity("EShop.Models.ProductImage", b =>
                 {
                     b.HasOne("EShop.Models.ProductModel", "Product")
                         .WithMany("Images")

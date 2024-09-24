@@ -10,7 +10,7 @@ namespace EShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/Contact")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Staff")]
     public class ContactController : Controller
     {
 		private readonly DataContext _dataContext;

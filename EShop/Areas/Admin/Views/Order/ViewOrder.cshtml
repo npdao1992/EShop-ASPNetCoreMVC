@@ -1,138 +1,112 @@
 ﻿@model IEnumerable<OrderDetails>
 @{
-	ViewData["title"] = "Order Details";
-	var userName = "";
-	decimal toTal = 0;
-	decimal subtoTal = 0;
-	var stt = 1;
+    ViewData["title"] = "Order Details";
+    decimal toTal = 0;
+    decimal subtoTal = 0;
+    var stt = 1;
 }
 <h3>Order Details (<span style="color: orangered"> @Model.Count() </span>)</h3>
 <div class="col-md-12">
-	@foreach (var item in Model)
-	{
-		<div style="font-size: 16px; font-weight:bold">
-			Đơn hàng của tài khoản: <span style="color: chocolate">@item.UserName</span>
-			<br />
-			Order Code: <span style="color: chocolate">@item.OrderCode</span>
-		</div>
-		break;
-	}
 
-	<table class="table" id="detail_order">
-		<thead>
-			<tr>
-				<th>No</th>
-				<th scope="col" width="20%">Order Code</th>
-				<th scope="col">UserName</th>
-				<th style="text-align:center">Id</th>
-				<th style="text-align:center">Product Name</th>
-				<th style="text-align:center">Product Image</th>
-				<th style="text-align:center">Product Price</th>
-				<th style="text-align:center">Quantity</th>
-				<th style="text-align:center">SubTotal</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var item in Model)
-			{
-				subtoTal = item.Quantity * item.Price; // Số lượng n* đơn giá
-				toTal += subtoTal;
-				<tr>
-					<input type="hidden" asp-for="@item.OrderCode" class="getId" />
-					<th style="text-align:center">@stt</th>
-					<th scope="row">@item.OrderCode</th>
-					<td>@item.UserName</td>
-					<td style="text-align:center">@item.Id</td>
-					<td>@item.Product.Name</td>
-					<td style="text-align:center"><img src="~/media/products/@item.Product.Image" width="70px" height="100%" /></td>
-					<td style="text-align:right">@String.Format("{0:N2}", item.Price.ToString("#,##0 VNĐ"))</td>
-					<td style="text-align:center">@String.Format("{0:N2}", item.Quantity)</td>
+    <div style="font-size: 16px; font-weight:bold">
+        Đơn hàng của tài khoản: <span style="color: chocolate">@ViewBag.UserName</span>
+        <br />
+        Order Code: <span style="color: chocolate">@ViewBag.OrderCode</span>
+    </div>
 
-					<td style="text-align:right">@subtoTal.ToString("#,##0 VNĐ")</td>
-					@* <td> @String.Format("{0:N2}", item.Quantity * item.Price)</td> *@
+    <table class="table" id="detail_order">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th scope="col" width="20%">Order Code</th>
+                <th scope="col">UserName</th>
+                <th style="text-align:center">Id</th>
+                <th style="text-align:center">Product Name</th>
+                <th style="text-align:center">Product Image</th>
+                <th style="text-align:center">Product Price</th>
+                <th style="text-align:center">Quantity</th>
+                <th style="text-align:center">SubTotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                subtoTal = item.Quantity * item.Price; // Số lượng n * đơn giá
+                toTal += subtoTal;
+                <tr>
+                    <input type="hidden" asp-for="@item.OrderCode" class="getId" />
+                    <th style="text-align:center">@stt</th>
+                    <th scope="row">@item.OrderCode</th>
+                    <td>@item.UserName</td>
+                    <td style="text-align:center">@item.Id</td>
+                    <td>@item.Product.Name</td>
+                    <td style="text-align:center"><img src="~/media/products/@item.Product.Image" width="70px" height="100%" /></td>
+                    <td style="text-align:right">@String.Format("{0:N2}", item.Price.ToString("#,##0 VNĐ"))</td>
+                    <td style="text-align:center">@String.Format("{0:N2}", item.Quantity)</td>
+                    <td style="text-align:right">@subtoTal.ToString("#,##0 VNĐ")</td>
+                </tr>
+                stt++;
+            }
+        </tbody>
 
+        <tfoot>
+            <tr>
+                <th colspan="6" style="text-align:center">Total:</th>
+                <th colspan="2" style="text-align:right">@String.Format("{0:N2}", toTal.ToString("#,##0 VNĐ"))</th>
+                <th style="text-align:center">
+                    <select class="form-control select-update-order" @(ViewBag.Status == 0 && ViewBag.IsAdmin == false ? "disabled" : "")>
+                        <option value="1" selected="@(ViewBag.Status == 1 ? "selected" : null)">Đơn hàng mới</option>
+                        <option value="0" selected="@(ViewBag.Status == 0 ? "selected" : null)">Đã xử lý</option>
+                    </select>
+                </th>
+            </tr>
+        </tfoot>
 
-					@* <td>
-				@if (@item.Status == 1)
-				{
-				<span class="text text-success">Đơn hàng mới</span>
-				}
-				else
-				{
-				<span class="text text-danger">Đơn hàng thành công</span>
-				}
-				</td> *@
-					@* <td>
-				<a asp-action="ViewOrder" class="btn btn-warning btn-sm" asp-controller="Order" asp-route-id="@item.OrderCode">View Order</a>
-				<a asp-action="Delete" class="btn btn-danger btn-sm confirmDeletion" asp-controller="Order" asp-route-id="@item.Id">Delete</a>
-				</td> *@
-				</tr>
-				stt++;
-			}
-		</tbody>
-
-		<tfoot>
-			<tr>
-				<th colspan="6" style="text-align:center">Total:</th>
-
-				<th colspan="2" style="text-align:right">@String.Format("{0:N2}", toTal.ToString("#,##0 VNĐ"))</th>
-				<th style="text-align:center">
-					<select class="form-control select-update-order">
-						<option value="1">Đơn hàng mới</option>
-						<option value="0">Đã xử lý</option>
-					</select>
-				</th>
-			</tr>
-		</tfoot>
-
-	</table>
+    </table>
 </div>
-
 
 <a asp-action="Index">Back to List Orders</a>
 
 @section Scripts {
-	<script>
-		new DataTable('#detail_order', {
-			layout: {
-				topStart: {
-					buttons: ['pdf','print']
-				}
-			}
-		});
-	</script>
+    <script>
+        new DataTable('#detail_order', {
+            layout: {
+                topStart: {
+                    buttons: ['pdf', 'print']
+                }
+            }
+        });
+    </script>
 
+    <script>
+        $(document).ready(function () {
+            $('.select-update-order').change(function () {
+                var status = $(this).val(); // status = 1
+                var ordercode = $('.getId').val();
 
-	<script>
-		$(document).ready(function () {
-			$('.select-update-order').change(function () {
-				var status = $(this).val(); //status = 1
-				var ordercode = $('.getId').val();
-				// alert(status);
-				// alert(ordercode);
-				$.ajax({
-					type: "POST",
-					url: "@Url.Action("UpdateOrder")",
-					data: { status: status, ordercode: ordercode },
-					success: function (result) {
-						// Handle successful update
-						if (result.success) {
-							// Update UI or show success mesage
-							// console.log("Update successful");
-							Swal.fire("Cập nhật đơn hàng thành công.");
-						}
-						else {
-							// Handle error
-							// console.log("Update failed: " + result.message);
-							Swal.fire("Cập nhật đơn hàng thất bại: " + result.message);
-						}
-					}
-					// ,
-					// error: function (reg, status, error) {
-					// 	console.error("Error updating order: ", error);
-					// }
-				});
-			});
-		});
-	</script>
+                // Kiểm tra nếu status là 0 (Đã xử lý), thì thêm thuộc tính readonly vào select
+                if (status == 0) {
+                    $(this).prop('disabled', true); // Vô hiệu hóa select
+                } else {
+                    $(this).prop('disabled', false); // Kích hoạt lại select nếu không phải là Đã xử lý
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("UpdateOrder")",
+                    data: { status: status, ordercode: ordercode },
+                    success: function (result) {
+                        // Handle successful update
+                        if (result.success) {
+                            Swal.fire("Cập nhật đơn hàng thành công.");
+                        }
+                        else {
+                            Swal.fire("Cập nhật đơn hàng thất bại. " + result.message);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
 }

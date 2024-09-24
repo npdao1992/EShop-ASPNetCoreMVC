@@ -10,8 +10,8 @@ namespace EShop.Areas.Admin.Controllers
 {
 	[Area("Admin")]
 	[Route("Admin/Category")]
-	[Authorize(Roles = "Admin")]
-	public class CategoryController : Controller
+    [Authorize(Roles = "Admin,Staff")]
+    public class CategoryController : Controller
 	{
 		private readonly DataContext _dataContext;
 		public CategoryController(DataContext context)
@@ -174,7 +174,7 @@ namespace EShop.Areas.Admin.Controllers
 
 			_dataContext.Categories.Remove(category);
 			await _dataContext.SaveChangesAsync();
-			TempData["successs"] = "Danh mục đã xoá thành công";
+			TempData["success"] = "Danh mục đã xoá thành công";
 			return RedirectToAction("Index");
 		}
 

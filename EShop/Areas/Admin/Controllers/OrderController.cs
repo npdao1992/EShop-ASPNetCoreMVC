@@ -8,7 +8,7 @@ namespace EShop.Areas.Admin.Controllers
 {
 	[Area("Admin")]
 	[Route("Admin/Order")]
-	[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin,Staff")]
 	public class OrderController : Controller
 	{
 		private readonly DataContext _dataContext;
@@ -53,9 +53,37 @@ namespace EShop.Areas.Admin.Controllers
 		[Route("ViewOrder")]
 		public async Task<IActionResult> ViewOrder(string ordercode)
 		{
-			var DetailsOrder = await _dataContext.OrderDetails.Include(o => o.Product).Where(o => o.OrderCode == ordercode).ToListAsync();
-			return View(DetailsOrder);
+			// Lấy thông tin chi tiết đơn hàng và thông tin người dùng dựa trên mã đơn hàng
+			var order = await _dataContext.Orders
+				.FirstOrDefaultAsync(o => o.OrderCode == ordercode);
+
+			var detailsOrder = await _dataContext.OrderDetails
+				.Include(od => od.Product)
+				.Where(od => od.OrderCode == ordercode)
+				.ToListAsync();
+
+			if (order != null)
+			{
+				ViewBag.UserName = order.UserName;
+				ViewBag.OrderCode = order.OrderCode;
+
+                // Giả sử bạn có một cách để kiểm tra Role của người dùng
+                ViewBag.IsAdmin = User.IsInRole("Admin"); // Kiểm tra xem người dùng có Role "Admin" hay không
+
+                ViewBag.Status = order.Status; // Lấy giá trị Status
+			}
+
+			return View(detailsOrder);
 		}
+
+
+
+		//[Route("ViewOrder")]
+		//public async Task<IActionResult> ViewOrder(string ordercode)
+		//{
+		//	var DetailsOrder = await _dataContext.OrderDetails.Include(o => o.Product).Where(o => o.OrderCode == ordercode).ToListAsync();
+		//	return View(DetailsOrder);
+		//}
 
 		/*
 		 Phân trang sử dụng ToList() tải toàn bộ dữ liệu lần đầu
@@ -133,18 +161,32 @@ namespace EShop.Areas.Admin.Controllers
 		[Route("UpdateOrder")]
 		public async Task<IActionResult> UpdateOrder(string ordercode, int status)
 		{
-			var order = await _dataContext.Orders.FirstOrDefaultAsync(o => o.OrderCode == ordercode);
+            // Lấy thông tin đơn hàng từ database
+            var order = await _dataContext.Orders.FirstOrDefaultAsync(o => o.OrderCode == ordercode);
 
-			if (order == null)
+            // Kiểm tra nếu đơn hàng không tồn tại
+            if (order == null)
 			{
-				return NotFound();
-			}
+				//return NotFound();
+                return Json(new { success = false, message = "Đơn hàng không tồn tại." });
+            }
 
-			order.Status = status;
+            // Kiểm tra Role của người dùng
+            var isAdmin = User.IsInRole("Admin");
+
+            // Nếu người dùng không phải là Admin, chỉ cho phép cập nhật từ "Đơn hàng mới" (1) sang "Đã xử lý" (0)
+            if (!isAdmin && status == 1 && order.Status == 0)
+            {
+                return Json(new { success = false, message = "Bạn không có quyền thay đổi trạng thái này." });
+            }
+
+            // Cập nhật trạng thái đơn hàng
+            order.Status = status;
 
 			try
 			{
-				await _dataContext.SaveChangesAsync();
+                // Lưu thay đổi vào cơ sở dữ liệu
+                await _dataContext.SaveChangesAsync();
 				return Ok(new { success = true, message = "Order status updated successfully" });
 			}
 			catch (Exception ex)
