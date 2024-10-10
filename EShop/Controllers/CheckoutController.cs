@@ -4,6 +4,7 @@ using EShop.Models;
 using EShop.Models.ViewModels;
 using EShop.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Controllers
 {
@@ -47,6 +48,14 @@ namespace EShop.Controllers
 					orderdetails.ProductId = cart.ProductId;
 					orderdetails.Price = cart.Price;
 					orderdetails.Quantity = cart.Quantity;
+
+					// Start update product quantity
+					var product = await _dataContext.Products.Where(p => p.Id == cart.ProductId).FirstAsync();
+					product.Quantity -= cart.Quantity;
+					product.Sold += cart.Quantity;
+					_dataContext.Update(product);
+					// End update product quantity
+
 					_dataContext.Add(orderdetails);
 					_dataContext.SaveChanges();
 				}

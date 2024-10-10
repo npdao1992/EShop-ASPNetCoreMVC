@@ -42,7 +42,7 @@
                     <td>@item.Product.Name</td>
                     <td style="text-align:center"><img src="~/media/products/@item.Product.Image" width="70px" height="100%" /></td>
                     <td style="text-align:right">@String.Format("{0:N2}", item.Price.ToString("#,##0 VNĐ"))</td>
-                    <td style="text-align:center">@String.Format("{0:N2}", item.Quantity)</td>
+                    <td style="text-align:center">@String.Format("{0:N2}", item.Quantity.ToString("#,##0"))</td>
                     <td style="text-align:right">@subtoTal.ToString("#,##0 VNĐ")</td>
                 </tr>
                 stt++;

@@ -2,6 +2,7 @@
 using EShop.Models.ViewModels;
 using EShop.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Controllers
 {
@@ -79,17 +80,21 @@ namespace EShop.Controllers
 		}
 		public async Task<IActionResult> Increase(long Id)
 		{
-			List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart");
+			ProductModel product = await _dataContext.Products.Where(p => p.Id == Id).FirstOrDefaultAsync();
 
+			List<CartItemModel> cart = HttpContext.Session.GetJson<List<CartItemModel>>("Cart");
 			CartItemModel cartItem = cart.Where(c => c.ProductId == Id).FirstOrDefault();
 
-			if (cartItem.Quantity >= 1)
+			if (cartItem.Quantity >= 1 && product.Quantity > cartItem.Quantity)
 			{
 				++cartItem.Quantity;
+				TempData["success"] = "Increase Product to cart Successfully.";
 			}
 			else
 			{
-				cart.RemoveAll(p => p.ProductId == Id);
+				cartItem.Quantity = product.Quantity;
+				//cart.RemoveAll(p => p.ProductId == Id);
+				TempData["success"] = "Maximum Increase Product to cart Successfully.";
 			}
 
 			if (cart.Count == 0)
@@ -101,7 +106,7 @@ namespace EShop.Controllers
 				HttpContext.Session.SetJson("Cart", cart);
 			}
 
-			TempData["success"] = "Increase Item Quantity to cart Successfully.";
+			TempData["success"] = "Increase Product to cart Successfully.";
 
 			return RedirectToAction("Index");
 		}

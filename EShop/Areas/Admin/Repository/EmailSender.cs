@@ -11,7 +11,7 @@ namespace EShop.Areas.Admin.Repository
 			{
 				EnableSsl = true, //bật bảo mật
 				UseDefaultCredentials = false,
-				Credentials = new NetworkCredential("dnp.relax@gmail.com", "jnppovloipwotglw")
+				Credentials = new NetworkCredential("dnp.relax@gmail.com", "hrctmtnffkohblou")
 			};
 
 			return client.SendMailAsync(
