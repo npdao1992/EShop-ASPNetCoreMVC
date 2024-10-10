@@ -42,7 +42,12 @@
 						</p>
 					}
 				</td>
-				<td style="text-align:center"><img src="~/media/sliders/@item.Image" width="400px" height="200px" /></td>
+				@* <td style="text-align:center"><img src="~/media/sliders/@item.Image" width="400px" height="200px" /></td> *@
+
+				<td style="text-align:center">
+					<img src="@(item.Image == "noname.png" ? Url.Content("~/media/default/noname.png") : Url.Content("~/media/sliders/" + item.Image))" width="400px" height="200px" />
+				</td>
+
 				<td style="text-align:center">
 					@if (@item.Status == 1)
 					{

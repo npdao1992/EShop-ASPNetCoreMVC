@@ -9,8 +9,8 @@ namespace EShop.Areas.Admin.Controllers
 {
 	[Area("Admin")]
 	[Route("Admin/Product")]
-    [Authorize(Roles = "Admin,Staff")]
-    public class ProductController : Controller
+	[Authorize(Roles = "Admin,Staff")]
+	public class ProductController : Controller
 	{
 		private readonly DataContext _dataContext;
 		private readonly IWebHostEnvironment _webHostEnvironment;
@@ -21,6 +21,7 @@ namespace EShop.Areas.Admin.Controllers
 		}
 
 		[Route("Index")]
+		[HttpGet]
 		public async Task<IActionResult> Index()
 		{
 			return View(await _dataContext.Products.OrderByDescending(p => p.Id).Include(p => p.Category).Include(p => p.Brand).ToListAsync());
@@ -323,8 +324,8 @@ namespace EShop.Areas.Admin.Controllers
 				return NotFound();
 			}
 
-				string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
-				string oldfilePath = Path.Combine(uploadsDir, product.Image);
+			string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/products");
+			string oldfilePath = Path.Combine(uploadsDir, product.Image);
 			try
 			{
 				if (System.IO.File.Exists(oldfilePath))
@@ -342,5 +343,38 @@ namespace EShop.Areas.Admin.Controllers
 			TempData["success"] = "Sản phẩm đã xoá thành công";
 			return RedirectToAction("Index");
 		}
+
+		// Add more quantity to products
+		[Route("AddQuantity")]
+		[HttpGet]
+		public async Task<IActionResult> AddQuantity(long Id)
+		{
+			ViewBag.Id = Id;
+			return View();
+		}
+
+
+		[Route("StoreProductQuantity")]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> StoreProductQuantity(ProductQuantityModel productQuantityModel)
+		{
+			var product = _dataContext.Products.Find(productQuantityModel.ProductId);
+
+			if (product == null) { return NotFound(); }
+
+			product.Quantity += productQuantityModel.Quantity;
+
+			productQuantityModel.Quantity = productQuantityModel.Quantity;
+			productQuantityModel.ProductId = productQuantityModel.ProductId;
+			productQuantityModel.DateCreated = DateTime.Now;
+
+			_dataContext.Add(productQuantityModel);
+			_dataContext.SaveChangesAsync();
+
+			TempData["success"] = "Thêm số lượng sản phẩm thành công";
+			return RedirectToAction("AddQuantity", "Product", new {Id = productQuantityModel.ProductId});
+		}
+
 	}
 }

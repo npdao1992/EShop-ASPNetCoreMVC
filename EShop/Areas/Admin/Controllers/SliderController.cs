@@ -56,9 +56,16 @@ namespace EShop.Areas.Admin.Controllers
 
 					slider.Image = imageName;
 				}
+				else
+				{
+					// Nếu không có hình ảnh được tải lên, sử dụng hình ảnh mặc định "noname.png"
+					slider.Image = "noname.png";
+				}
 
+				// Lưu sản phẩm vào cơ sở dữ liệu
 				_dataContext.Add(slider);
 				await _dataContext.SaveChangesAsync();
+
 				TempData["success"] = "Thêm slider thành công";
 				return RedirectToAction("Index");
 			}

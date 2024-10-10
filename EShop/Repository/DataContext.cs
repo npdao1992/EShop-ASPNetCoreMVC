@@ -24,6 +24,7 @@ namespace EShop.Repository
 		public DbSet<ContactModel> Contact { get; set; }
 		public DbSet<WishlistModel> Wishlists { get; set; }
 		public DbSet<CompareModel> Compares { get; set; }
+		public DbSet<ProductQuantityModel> ProductQuantities { get; set; }
 
 
 
