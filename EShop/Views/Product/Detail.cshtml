@@ -1,137 +1,147 @@
 ﻿@model ProductDetailsViewModel
 @{
-    ViewData["Title"] = "Detail";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Detail";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
-    .product-image-wrapper {
-        height: 410px;
-    }
+	.product-image-wrapper {
+		height: 410px;
+	}
 </style>
 
 <div class="row">
-    <div class="col-sm-3">
-        @Html.Partial("_SidebarPartial")
-    </div>
+	<div class="col-sm-3">
+		@Html.Partial("_SidebarPartial")
+	</div>
 
-    <div class="col-sm-9 padding-right">
-        <div class="product-details">
-            <h2 class="title text-center">Details Product</h2>
-            <!--product-details-->
-            <div class="col-sm-5">
-                <div class="view-product">
-                    <img src="~/media/products/@Model.ProductDetails.Image" alt="" />
-                    <h3>ZOOM</h3>
-                </div>
+	<div class="col-sm-9 padding-right">
+		<div class="product-details">
+			<h2 class="title text-center">Details Product</h2>
+			<!--product-details-->
+			<div class="col-sm-5">
+				<div class="view-product">
+					<img src="~/media/products/@Model.ProductDetails.Image" alt="" />
+					<h3>ZOOM</h3>
+				</div>
 
-                <div id="similar-product" class="carousel slide" data-ride="carousel">
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner">
-                        <div class="item active">
-                            <a href=""><img src="~/images/product-details/similar1.jpg" alt=""></a>
-                            <a href=""><img src="~/images/product-details/similar2.jpg" alt=""></a>
-                            <a href=""><img src="~/images/product-details/similar3.jpg" alt=""></a>
-                        </div>
+				<div id="similar-product" class="carousel slide" data-ride="carousel">
+					<!-- Wrapper for slides -->
+					<div class="carousel-inner">
+						<div class="item active">
+							<a href=""><img src="~/images/product-details/similar1.jpg" alt=""></a>
+							<a href=""><img src="~/images/product-details/similar2.jpg" alt=""></a>
+							<a href=""><img src="~/images/product-details/similar3.jpg" alt=""></a>
+						</div>
 
-                        <div class="item">
-                            <a href=""><img src="~/images/product-details/similar1.jpg" alt=""></a>
-                            <a href=""><img src="~/images/product-details/similar2.jpg" alt=""></a>
-                            <a href=""><img src="~/images/product-details/similar3.jpg" alt=""></a>
-                        </div>
+						<div class="item">
+							<a href=""><img src="~/images/product-details/similar1.jpg" alt=""></a>
+							<a href=""><img src="~/images/product-details/similar2.jpg" alt=""></a>
+							<a href=""><img src="~/images/product-details/similar3.jpg" alt=""></a>
+						</div>
 
 
-                    </div>
+					</div>
 
-                    <!-- Controls -->
-                    <a class="left item-control" href="#similar-product" data-slide="prev">
-                        <i class="fa fa-angle-left"></i>
-                    </a>
-                    <a class="right item-control" href="#similar-product" data-slide="next">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
-                </div>
+					<!-- Controls -->
+					<a class="left item-control" href="#similar-product" data-slide="prev">
+						<i class="fa fa-angle-left"></i>
+					</a>
+					<a class="right item-control" href="#similar-product" data-slide="next">
+						<i class="fa fa-angle-right"></i>
+					</a>
+				</div>
 
-            </div>
-            <div class="col-sm-7">
-                <div class="product-information">
-                    <h2>@Model.ProductDetails.Name</h2>
-                    <span>
-                        <span>@String.Format("{0:N2}", @Model.ProductDetails.Price.ToString("#,##0 VNĐ"))</span>
-                        <label>Quantity: 1</label>
-                        <input type="text" value="3" />
-                        <button type="button" class="btn btn-fefault cart">
-                            <i class="fa fa-shopping-cart"></i>
-                            Add to cart
-                        </button>
-                    </span>
-                    <p><b>Availability:</b> In Stock</p>
-                    <p><b>Condition:</b> New</p>
-                    <p><b>Brand:</b> @Model.ProductDetails.Brand.Name</p>
-                    <a href=""><img src="images/product-details/share.png" class="share img-responsive" alt="" /></a>
-                </div>
-            </div>
-        </div>
+			</div>
+			<div class="col-sm-7">
+				<div class="product-information">
+					<h2>@Model.ProductDetails.Name</h2>
+					<span>
+						<span>@String.Format("{0:N2}", @Model.ProductDetails.Price.ToString("#,##0 VNĐ"))</span>
+						<label>Quantity: 1</label>
+						<input type="text" value="3" />
+						@if (@Model.ProductDetails.Quantity > 0)
+						{
+							<button type="button" class="btn btn-fefault cart">
+								<i class="fa fa-shopping-cart"></i>
+								Thêm giỏ hàng
+							</button>
+						}
+						else
+						{
+							<button type="button" class="btn btn-fefault">
+								<i class="fa fa-shopping-cart"></i>
+								Hết hàng
+							</button>
+						}
+					</span>
+					<p><b>Availability:</b> In Stock</p>
+					<p><b>Condition:</b> New</p>
+					<p><b>Brand:</b> @Model.ProductDetails.Brand.Name</p>
+					<a href=""><img src="images/product-details/share.png" class="share img-responsive" alt="" /></a>
+				</div>
+			</div>
+		</div>
 
-        <div class="recommended_items">
-            <h2 class="title text-center">Related Products</h2>
+		<div class="recommended_items">
+			<h2 class="title text-center">Related Products</h2>
 
-            <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel" >
-                <div class="carousel-inner">
-                    @* Xử lý các sản phẩm liên quan *@
-                    @{
-                        var relatedProducts = ViewBag.RelatedProducts as IEnumerable<ProductModel> ?? Enumerable.Empty<ProductModel>();
-                        var productGroups = relatedProducts.Select((product, index) => new { product, index })
-                        .GroupBy(x => x.index / 3)
-                        .ToList();
-                    }
+			<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+				<div class="carousel-inner">
+					@* Xử lý các sản phẩm liên quan *@
+					@{
+						var relatedProducts = ViewBag.RelatedProducts as IEnumerable<ProductModel> ?? Enumerable.Empty<ProductModel>();
+						var productGroups = relatedProducts.Select((product, index) => new { product, index })
+						.GroupBy(x => x.index / 3)
+						.ToList();
+					}
 
-                    <!-- Duyệt qua các nhóm sản phẩm để tạo carousel items -->
-                    @for (int i = 0; i < productGroups.Count; i++)
-                    {
-                        <div class="item @(i == 0 ? "active" : "")">
-                            @foreach (var item in productGroups[i])
-                            {
-                                var relatedProduct = item.product;
-                                <div class="col-sm-4">
-                                    <div class="product-image-wrapper">
-                                        <div class="single-products">
-                                            <div class="productinfo text-center">
-                                                <a asp-action="Detail" asp-controller="Product" asp-route-id="@relatedProduct.Id">
-                                                    <img src="~/media/products/@relatedProduct.Image" alt="@relatedProduct.Name" width="100%" height="150px" />
-                                                </a>
-                                                    <h2>@String.Format("{0:N2}", @relatedProduct.Price.ToString("#,##0 VNĐ"))</h2>
-                                                    <p>@relatedProduct.Name</p>
-                                                    <p>Danh mục: @relatedProduct.Category.Name</p>
-                                                    <p>Thương hiệu: @relatedProduct.Brand.Name</p>
-                                                @*<button class="btn btn-default add-to-cart" data-product_id="@relatedProduct.Id">
-                                                    <i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
-                                                </button> *@
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                </div>
+					<!-- Duyệt qua các nhóm sản phẩm để tạo carousel items -->
+					@for (int i = 0; i < productGroups.Count; i++)
+					{
+						<div class="item @(i == 0 ? "active" : "")">
+							@foreach (var item in productGroups[i])
+							{
+								var relatedProduct = item.product;
+								<div class="col-sm-4">
+									<div class="product-image-wrapper">
+										<div class="single-products">
+											<div class="productinfo text-center">
+												<a asp-action="Detail" asp-controller="Product" asp-route-id="@relatedProduct.Id">
+													<img src="~/media/products/@relatedProduct.Image" alt="@relatedProduct.Name" width="100%" height="150px" />
+												</a>
+												<h2>@String.Format("{0:N2}", @relatedProduct.Price.ToString("#,##0 VNĐ"))</h2>
+												<p>@relatedProduct.Name</p>
+												<p>Danh mục: @relatedProduct.Category.Name</p>
+												<p>Thương hiệu: @relatedProduct.Brand.Name</p>
+												@*<button class="btn btn-default add-to-cart" data-product_id="@relatedProduct.Id">
+										<i class="fa fa-shopping-cart"></i> Thêm giỏ hàng
+										</button> *@
+											</div>
+										</div>
+									</div>
+								</div>
+							}
+						</div>
+					}
+				</div>
 
-                <!-- Điều hướng Carousel -->
-                <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-                    <i class="fa fa-angle-left"></i>
-                </a>
-                <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
-                    <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-       
-            
-            </div>
-    </div>
+				<!-- Điều hướng Carousel -->
+				<a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+					<i class="fa fa-angle-left"></i>
+				</a>
+				<a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+					<i class="fa fa-angle-right"></i>
+				</a>
+			</div>
+
+
+		</div>
+	</div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }
