@@ -50,12 +50,17 @@ namespace EShop.Areas.Admin.Controllers
 		//	return View(model);
 		//}
 
+		[HttpGet]
 		[Route("ViewOrder")]
 		public async Task<IActionResult> ViewOrder(string ordercode)
 		{
 			// Lấy thông tin chi tiết đơn hàng và thông tin người dùng dựa trên mã đơn hàng
 			var order = await _dataContext.Orders
 				.FirstOrDefaultAsync(o => o.OrderCode == ordercode);
+
+			// Lấy shipping cost
+			var ShippingCost = _dataContext.Orders.Where(o => o.OrderCode == ordercode).First();
+			ViewBag.ShippingCost = ShippingCost.ShippingCost;
 
 			var detailsOrder = await _dataContext.OrderDetails
 				.Include(od => od.Product)

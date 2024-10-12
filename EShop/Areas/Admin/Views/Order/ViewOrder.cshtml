@@ -53,6 +53,16 @@
             <tr>
                 <th colspan="6" style="text-align:center">Total:</th>
                 <th colspan="2" style="text-align:right">@String.Format("{0:N2}", toTal.ToString("#,##0 VNĐ"))</th>
+                <th></th>
+            </tr>
+             <tr>
+                <th colspan="6" style="text-align:center">Shipping Cost:</th>
+                <th colspan="2" style="text-align:right">@String.Format("{0:N2}", ViewBag.ShippingCost.ToString("#,##0 VNĐ"))</th>
+                <th></th>
+            </tr>
+             <tr>
+                <th colspan="6" style="text-align:center">Grand Total:</th>
+                <th colspan="2" style="text-align:right">@String.Format("{0:N2}", (toTal + ViewBag.ShippingCost).ToString("#,##0 VNĐ"))</th>
                 <th style="text-align:center">
                     <select class="form-control select-update-order" @(ViewBag.Status == 0 && ViewBag.IsAdmin == false ? "disabled" : "")>
                         <option value="1" selected="@(ViewBag.Status == 1 ? "selected" : null)">Đơn hàng mới</option>
@@ -60,6 +70,8 @@
                     </select>
                 </th>
             </tr>
+
+
         </tfoot>
 
     </table>

@@ -30,30 +30,6 @@
 				<li class="active">Shopping Cart</li>
 			</ol>
 		</div>
-
-		<div style="margin-bottom:30px;">
-			<div class="form-group">
-				<label>Chọn</label>
-				<select class="css_select" id="tinh" name="tinh" title="Chọn Tỉnh Thành">
-					<option value="0">Tỉnh Thành</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label>Chọn</label>
-				<select class="css_select" id="quan" name="quan" title="Chọn Quận Huyện">
-					<option value="0">Quận Huyện</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label>Chọn</label>
-				<select class="css_select" id="phuong" name="phuong" title="Chọn Phường Xã">
-					<option value="0">Phường Xã</option>
-				</select>
-			</div>
-			<button type="button" class="btn btn-default btn-add-shipping">Tính phí ship</button>
-		</div>
-
-
 		<div class="table-responsive cart_info">
 			<table class="table table-condensed">
 				<thead>
@@ -97,30 +73,25 @@
 						}
 
 						<tr>
-							<td style="text-align:center" colspan="4" class="text-center fw-bold">
-								<h4 style="font-style: italic; color: #6c757d; font-size: 2rem;">Total :</h4>
-							</td>
-
-							<td style ="text-align:right" class="align-middle">
-								<p class="cart_total_price">@String.Format("{0:N2}", @Model.GrandTotal.ToString("#,##0 VNĐ"))</p>
-							</td>
-							
+							<div class="form-group">
+								<label>Chọn</label>
+								<select class="css_select" id="tinh" name="tinh" title="Chọn Tỉnh Thành">
+									<option value="0">Tỉnh Thành</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Chọn</label>
+								<select class="css_select" id="quan" name="quan" title="Chọn Quận Huyện">
+									<option value="0">Quận Huyện</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Chọn</label>
+								<select class="css_select" id="phuong" name="phuong" title="Chọn Phường Xã">
+									<option value="0">Phường Xã</option>
+								</select>
+							</div>
 						</tr>
-
-						<tr>
-							<td style="text-align:center" colspan="4" class="text-center fw-bold">
-								<h4 style="font-style: italic; color: #6c757d; font-size: 2rem;">Shipping Cost :</h4>
-							</td>
-
-							<td style ="text-align:right" class="align-middle">
-								<p class="cart_total_price">@String.Format("{0:N2}", @Model.ShippingCost.ToString("#,##0 VNĐ"))</p>
-							</td>
-
-							<td style="text-align:center" class="align-middle text-center">
-								<a class="btn btn-danger btn-sm" asp-controller="Cart" asp-action="DeleteShipping">Xóa</a>
-							</td>
-						</tr>
-
 
 						<tr>
 							<td style="text-align:center" colspan="4" class="text-center fw-bold">
@@ -128,28 +99,18 @@
 							</td>
 
 							<td style ="text-align:right" class="align-middle">
-								<p class="cart_total_price">@String.Format("{0:N2}", (@Model.GrandTotal+Model.ShippingCost).ToString("#,##0 VNĐ"))</p>
+								<p class="cart_total_price">@String.Format("{0:N2}", @Model.GrandTotal.ToString("#,##0 VNĐ"))</p>
 							</td>
 
-							<td style="text-align:center;" class="align-middle text-center">
-								<a class="btn btn-warning btn-sm" asp-controller="Cart" asp-action="Clear">Xóa tất cả</a>
+							<td style="text-align:center" class="align-middle text-center">
+								<a class="btn btn-warning btn-sm" asp-controller="Cart" asp-action="Clear">Clear</a>
 
 								@if (User.Identity?.IsAuthenticated ?? false)
 								{
-									@if (Model.ShippingCost <= 0)
-									{
-										<a disabled="disabled" class="btn btn-warning btn-sm">Đặt hàng</a>
-										<br />
-										<span class="text text-danger">Yêu cầu tính phí vận chuyển trước khi đặt hàng</span>
-									}
-									else
-									{
-										<a class="btn btn-warning btn-sm" asp-controller="Checkout" asp-action="Checkout">Đặt hàng</a>
-									}
+									<a class="btn btn-warning btn-sm" asp-controller="Checkout" asp-action="Checkout">Checkout</a>
 								}
 							</td>
 						</tr>
-
 					}
 					else
 					{
@@ -163,33 +124,6 @@
 	</div>
 </section> <!--/#cart_items-->
 @section Scripts {
-	<script>
-		$(".btn-add-shipping").click(function () {
-			var tinh = $("#tinh").find('option:selected').text();
-			var quan = $("#quan").find('option:selected').text();
-			var phuong = $("#phuong").find('option:selected').text();
-
-			// Kiểm tra nếu có trường nào bị bỏ trống
-			if (tinh == '' || quan == '' || phuong == '') {
-				Swal.fire("Vui lòng không bỏ trống.");
-			}
-			else {
-				$.ajax({
-					type: "POST",
-					url: "@Url.Action("GetShipping", "Cart")",
-					data: { tinh: tinh, quan: quan, phuong: phuong },
-
-					success: function (result) {
-						// Kiểm tra phản hồi từ server
-						if (result) {
-							location.reload();
-						}		
-					}
-				});
-			}
-		})
-	</script>
-
 	<script>
 		$(document).ready(function () {
 			//Lấy tỉnh thành

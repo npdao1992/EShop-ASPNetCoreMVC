@@ -5,6 +5,7 @@ using EShop.Models.ViewModels;
 using EShop.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace EShop.Controllers
 {
@@ -32,6 +33,20 @@ namespace EShop.Controllers
 				var ordercode = Guid.NewGuid().ToString(); //123
 				var orderItem = new OrderModel();
 				orderItem.OrderCode = ordercode;
+
+				// Start Lấy shipping giá từ cookie
+				var shippingPriceCookie = Request.Cookies["ShippingPrice"];
+				decimal shippingPrice = 0;
+
+				if (shippingPriceCookie != null)
+				{
+					var shippingPriceJson = shippingPriceCookie;
+					shippingPrice = JsonConvert.DeserializeObject<decimal>(shippingPriceJson);
+				}
+				// End Lấy shipping giá từ cookie
+
+				orderItem.ShippingCost = shippingPrice;
+
 				orderItem.UserName = userEmail;
 				orderItem.Status = 1;
 				orderItem.CreatedDate = DateTime.Now;

@@ -11,6 +11,7 @@
 			<th style="text-align:center">No</th>
 			<th style="text-align:center">Order Id</th>
 			<th style="text-align:center" width="20%">Order Code</th>
+			<th style="text-align:center" width="12%">Shipping Cost</th>
 			<th style="text-align:center">UserName</th>
 			<th style="text-align:center">Order Date</th>
 			<th style="text-align:center">Order Stauts</th>
@@ -24,6 +25,7 @@
 				<th style="text-align:center">@stt</th>
 				<th style="text-align:center">@item.Id</th>
 				<th>@item.OrderCode</th>
+				<th style ="text-align:right">@item.ShippingCost.ToString("#,##0 VNĐ")</th>
 				<td>@item.UserName</td>
 				<td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
 				<td style="text-align:center">

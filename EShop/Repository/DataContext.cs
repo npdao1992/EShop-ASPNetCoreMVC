@@ -25,6 +25,7 @@ namespace EShop.Repository
 		public DbSet<WishlistModel> Wishlists { get; set; }
 		public DbSet<CompareModel> Compares { get; set; }
 		public DbSet<ProductQuantityModel> ProductQuantities { get; set; }
+		public DbSet<ShippingModel> Shippings { get; set; } // Thêm DbSet cho Shipping
 
 
 
