@@ -884,7 +884,8 @@ h2.title {
 }
 
 .productinfo img{
-  width: 100%;
+  /*width: 100%;*/
+  width: 150px;
 }
 
 .productinfo{
@@ -958,6 +959,23 @@ h2.title {
   border-radius: 0;
   color: #FFFFFF;
 }
+/* Thêm css nút vào Hết hàng*/
+.out-of-stock {
+	background: #F5F5ED;
+	border: 0 none;
+	border-radius: 0;
+	color: #696763;
+	font-family: 'Roboto', sans-serif;
+	font-size: 15px;
+	margin-bottom: 25px;
+}
+
+	.out-of-stock:hover {
+		background: #FE980F;
+		border: 0 none;
+		border-radius: 0;
+		color: #FFFFFF;
+	}
 
 .add-to{
   margin-bottom: 10px;

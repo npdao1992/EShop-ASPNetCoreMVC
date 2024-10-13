@@ -57,3 +57,31 @@
     }
 
 /* End CSS cho nút Thêm vào giỏ hàng */
+
+/* CSS cho nút Hết hàng*/
+.btn.out-of-stock {
+    background-color: #F5F5ED; /* Màu nền cho nút */
+    color: #696763; /* Màu chữ */
+    border: none; /* Bỏ viền mặc định */
+    padding: 10px 20px; /* Khoảng cách bên trong nút */
+    border-radius: 20px; /* Bo tròn góc nút */
+    font-size: 16px; /* Kích thước chữ */
+    /* font-weight: bold; */ /* Chữ đậm */
+    text-align: center; /* Căn giữa chữ */
+    transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển màu khi hover */
+    display: inline-flex; /* Căn giữa icon và chữ */
+    align-items: center; /* Căn giữa icon và chữ dọc theo trục */
+}
+
+    .btn.out-of-stock i {
+        margin-right: 8px; /* Khoảng cách giữa icon và chữ */
+    }
+
+    .btn.out-of-stock:hover {
+        /* background-color: #218838;*/ /* Màu nền khi hover */
+        background-color: red; /* Màu nền khi hover */
+        color: #e6e6e6; /* Màu chữ khi hover */
+    }
+
+/* End CSS cho nút Thêm vào giỏ hàng */
+

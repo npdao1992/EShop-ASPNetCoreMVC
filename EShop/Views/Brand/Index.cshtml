@@ -4,7 +4,7 @@
 </div>
 <style>
 	.product-image-wrapper {
-		height: 450px;
+		height: 420px;
 	}
 </style>
 <div class="col-sm-9 padding-right">
@@ -20,7 +20,21 @@
 							<a asp-action="Detail" asp-controller="Product" asp-route-id="@item.Id">
 								<img src="~/media/products/@item.Image" alt="@item.Name" width="100%" height="150px" />
 								<h2>@String.Format("{0:N2}", @item.Price.ToString("#,##0 VNĐ"))</h2>
-								<p>@item.Name</p>
+								@* <p>@item.Name</p> *@
+								<div title="@Html.Encode(item.Name)">
+									@if (item.Name.Length > 30)
+									{
+										<p style="text-align:center">
+											@Html.Raw((@item.Name.Substring(0, 30) + "..."))
+										</p>
+									}
+									else
+									{
+										<p style="text-align:center">
+											@Html.Raw(@item.Name)
+										</p>
+									}
+								</div>
 								<p>Danh mục : @item.Category.Name</p>
 								<p>Thương hiệu : @item.Brand.Name</p>
 							</a>
@@ -32,7 +46,7 @@
 							}
 							else
 							{
-								<button class="btn btn-default"><i class="fa fa-shopping-cart"></i>Hết hàng</button>
+								<button class="btn btn-default out-of-stock"><i class="fa fa-shopping-cart"></i>Hết hàng</button>
 							}
 						</div>
 					</div>

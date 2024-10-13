@@ -1,13 +1,17 @@
 ﻿@model IEnumerable<ProductModel>
 <div class="col-sm-3">
-	@Html.Partial("_SidebarPartial")
+	@* @Html.Partial("_SidebarPartial") *@
+	<partial name="_SidebarPartial" />
 </div>
 <style>
 	.product-image-wrapper {
-		height: 450px;
+		height: 420px;
 	}
 </style>
 <div class="col-sm-9 padding-right">
+
+	<partial name="_FilterProductsPartial" />
+
 	<div class="features_items">
 		<!--features_items-->
 		<h2 class="title text-center">Features Items</h2>
@@ -20,7 +24,21 @@
 							<a asp-action="Detail" asp-controller="Product" asp-route-id="@item.Id">
 								<img src="~/media/products/@item.Image" alt="@item.Name" width="100%" height="150px" />
 								<h2>@String.Format("{0:N2}", @item.Price.ToString("#,##0 VNĐ"))</h2>
-								<p>@item.Name</p>
+								@* <p>@item.Name</p> *@
+								<div title="@Html.Encode(item.Name)">
+									@if (item.Name.Length > 30)
+									{
+										<p style="text-align:center">
+											@Html.Raw((@item.Name.Substring(0, 30) + "..."))
+										</p>
+									}
+									else
+									{
+										<p style="text-align:center">
+											@Html.Raw(@item.Name)
+										</p>
+									}
+								</div>
 								<p>Danh mục : @item.Category.Name</p>
 								<p>Thương hiệu : @item.Brand.Name</p>
 							</a>
@@ -32,7 +50,7 @@
 							}
 							else
 							{
-								<button class="btn btn-default"><i class="fa fa-shopping-cart"></i>Hết hàng</button>
+								<button class="btn btn-default out-of-stock"><i class="fa fa-shopping-cart"></i>Hết hàng</button>
 							}
 
 						</div>
@@ -57,3 +75,62 @@
 	</div><!--features_items-->
 
 </div>
+
+@section Scripts {
+	@* <script src="https ://code.jquery.com/jquery-3.7.1.js"></script> *@
+	<!-- jqueryui.com/slider/#range -->
+	<script src="~/js/jquery-ui.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			$(function () {
+				$("#slider-range").slider({
+					range: true,
+					step: 1_000_000,
+					min: 0,
+					max: 200_000_000,
+					values: [0, 50_000_000],
+					slide: function (event, ui) {
+						// $("#amount").val("đ" + ui.values[0] + " - đ" + ui.values[1]);
+						$("#amount").val(
+							new Intl.NumberFormat('vn-VN', { style: 'currency', currency: 'VND' })
+								.format(ui.values[0])
+							+ " - " +
+							new Intl.NumberFormat('vn-VN', { style: 'currency', currency: 'VND' })
+								.format(ui.values[1])
+						);
+					}
+				});
+				$("#amount").val(
+					new Intl.NumberFormat('vn-VN', { style: 'currency', currency: 'VND' })
+						.format($("#slider-range").slider("values", 0))
+					+ " - " +
+					new Intl.NumberFormat('vn-VN', { style: 'currency', currency: 'VND' })
+						.format($("#slider-range").slider("values", 1)));
+			});
+
+			// btn lọc giá sản phẩm
+			$('.btn-locgia').on('click', function () {
+				var url = $(this).data("current_url");
+				if (url) {
+					window.location = url + "?startprice=" + $("#slider-range").slider("values", 0)
+						+ "&endprice=" + $("#slider-range").slider("values", 1);
+				}
+				return false;
+			});
+
+		});
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#sort_by').on('change', function () {
+				var url = $(this).val();
+				if (url) {
+					window.location = url;
+				}
+				return false;
+			});
+		});
+	</script>
+}
